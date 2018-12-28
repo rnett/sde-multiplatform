@@ -15,15 +15,23 @@ buildscript{
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:$frontend_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
+}
+
+plugins{
+    id 'maven-publish'
 }
 
 apply plugin: 'kotlin-multiplatform'
 
 apply plugin: 'kotlinx-serialization'
 
-group "com.rnett.kframe-data"
+apply plugin: 'org.jetbrains.kotlin.frontend'
+
+group "com.rnett.ligraph.eve"
+version "1.0.0"
 
 repositories {
     mavenCentral()
@@ -83,4 +91,14 @@ kotlin {
             }
         }
     }
+}
+
+compileKotlinJs {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+    kotlinOptions.moduleKind = "amd"
+}
+
+kotlinFrontend {
+    downloadNodeJsVersion = "latest"
 }

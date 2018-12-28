@@ -9,3 +9,5 @@ pluginManagement {
 }
 rootProject.name = 'sde-multiplatform'
 
+enableFeaturePreview('GRADLE_METADATA')
+
