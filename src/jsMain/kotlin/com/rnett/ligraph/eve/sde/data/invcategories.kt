@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -25,6 +28,8 @@ actual data class invcategory(
 
     @Serializer(invcategory::class)
     actual companion object : KSerializer<invcategory> {
+        actual fun getItem(id: Int): invcategory = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<invcategory> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invcategory") {
             init {
                 addElement("categoryID")
@@ -68,14 +73,8 @@ actual data class invcategory(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_categoryID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_categoryID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_categoryName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -84,14 +83,8 @@ actual data class invcategory(
                             )
                         )
                     ).toString()
-                    2 -> temp_iconID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    2 -> temp_iconID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     3 -> temp_published = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

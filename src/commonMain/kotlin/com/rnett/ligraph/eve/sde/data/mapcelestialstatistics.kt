@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -30,6 +31,8 @@ expect class mapcelestialstatistic {
 
     @Serializer(mapcelestialstatistic::class)
     companion object : KSerializer<mapcelestialstatistic> {
+        fun getItem(id: Int): mapcelestialstatistic
+        fun allItems(): List<mapcelestialstatistic>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapcelestialstatistic)

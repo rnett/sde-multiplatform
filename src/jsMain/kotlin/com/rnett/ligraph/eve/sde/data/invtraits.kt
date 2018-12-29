@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -25,6 +28,8 @@ actual data class invtrait(
 
     @Serializer(invtrait::class)
     actual companion object : KSerializer<invtrait> {
+        actual fun getItem(id: Int): invtrait = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<invtrait> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invtrait") {
             init {
                 addElement("traitID")
@@ -82,30 +87,12 @@ actual data class invtrait(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_traitID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    1 -> temp_typeID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    2 -> temp_skillID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_traitID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    1 -> temp_typeID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_skillID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     3 -> temp_bonus = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -122,14 +109,8 @@ actual data class invtrait(
                             )
                         )
                     ).toString()
-                    5 -> temp_unitID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    5 -> temp_unitID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

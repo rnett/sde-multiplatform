@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -32,6 +35,8 @@ actual data class chrfaction(
 
     @Serializer(chrfaction::class)
     actual companion object : KSerializer<chrfaction> {
+        actual fun getItem(id: Int): chrfaction = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<chrfaction> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("chrfaction") {
             init {
                 addElement("factionID")
@@ -124,14 +129,8 @@ actual data class chrfaction(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_factionID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_factionID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_factionName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -148,30 +147,12 @@ actual data class chrfaction(
                             )
                         )
                     ).toString()
-                    3 -> temp_raceIDs = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    4 -> temp_solarSystemID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    5 -> temp_corporationID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    3 -> temp_raceIDs =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    4 -> temp_solarSystemID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    5 -> temp_corporationID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     6 -> temp_sizeFactor = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -180,38 +161,14 @@ actual data class chrfaction(
                             )
                         )
                     ).toDouble()
-                    7 -> temp_stationCount = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    8 -> temp_stationSystemCount = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    9 -> temp_militiaCorporationID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
-                    10 -> temp_iconID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    7 -> temp_stationCount =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    8 -> temp_stationSystemCount =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    9 -> temp_militiaCorporationID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    10 -> temp_iconID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -37,6 +38,8 @@ expect class mapsolarsystem {
 
     @Serializer(mapsolarsystem::class)
     companion object : KSerializer<mapsolarsystem> {
+        fun getItem(id: Int): mapsolarsystem
+        fun allItems(): List<mapsolarsystem>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapsolarsystem)

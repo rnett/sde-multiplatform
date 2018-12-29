@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -12,6 +13,8 @@ expect class maplocationwormholeclass {
 
     @Serializer(maplocationwormholeclass::class)
     companion object : KSerializer<maplocationwormholeclass> {
+        fun getItem(id: Int): maplocationwormholeclass
+        fun allItems(): List<maplocationwormholeclass>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: maplocationwormholeclass)

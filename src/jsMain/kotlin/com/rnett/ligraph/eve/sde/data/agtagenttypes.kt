@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -21,6 +24,8 @@ actual data class agtagenttype(
 
     @Serializer(agtagenttype::class)
     actual companion object : KSerializer<agtagenttype> {
+        actual fun getItem(id: Int): agtagenttype = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<agtagenttype> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("agtagenttype") {
             init {
                 addElement("agentTypeID")
@@ -50,14 +55,8 @@ actual data class agtagenttype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_agentTypeID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_agentTypeID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_agentType = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

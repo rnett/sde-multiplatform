@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -28,6 +29,8 @@ expect class chrbloodline {
 
     @Serializer(chrbloodline::class)
     companion object : KSerializer<chrbloodline> {
+        fun getItem(id: Int): chrbloodline
+        fun allItems(): List<chrbloodline>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrbloodline)

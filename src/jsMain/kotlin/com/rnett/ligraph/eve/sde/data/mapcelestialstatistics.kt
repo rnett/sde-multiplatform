@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -39,6 +42,8 @@ actual data class mapcelestialstatistic(
 
     @Serializer(mapcelestialstatistic::class)
     actual companion object : KSerializer<mapcelestialstatistic> {
+        actual fun getItem(id: Int): mapcelestialstatistic = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<mapcelestialstatistic> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapcelestialstatistic") {
             init {
                 addElement("celestialID")
@@ -194,14 +199,8 @@ actual data class mapcelestialstatistic(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_celestialID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_celestialID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_temperature = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -346,14 +345,8 @@ actual data class mapcelestialstatistic(
                             )
                         )
                     ).toDouble()
-                    19 -> temp_mass = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    19 -> temp_mass =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

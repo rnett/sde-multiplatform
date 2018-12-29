@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -30,6 +33,8 @@ actual data class ramassemblylinetype(
 
     @Serializer(ramassemblylinetype::class)
     actual companion object : KSerializer<ramassemblylinetype> {
+        actual fun getItem(id: Int): ramassemblylinetype = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<ramassemblylinetype> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("ramassemblylinetype") {
             init {
                 addElement("assemblyLineTypeID")
@@ -108,14 +113,8 @@ actual data class ramassemblylinetype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_assemblyLineTypeID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_assemblyLineTypeID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_assemblyLineTypeName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -164,14 +163,8 @@ actual data class ramassemblylinetype(
                             )
                         )
                     ).toDouble()
-                    7 -> temp_activityID = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    7 -> temp_activityID =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     8 -> temp_minCostPerHour = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

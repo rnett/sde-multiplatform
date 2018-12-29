@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -25,6 +26,8 @@ expect class mapconstellation {
 
     @Serializer(mapconstellation::class)
     companion object : KSerializer<mapconstellation> {
+        fun getItem(id: Int): mapconstellation
+        fun allItems(): List<mapconstellation>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapconstellation)

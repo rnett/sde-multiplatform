@@ -1,6 +1,9 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
+import com.rnett.kframe.data.callEndpoint
+import com.rnett.ligraph.eve.sde.requestClient
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
@@ -21,6 +24,8 @@ actual data class invcontroltowerresourcepurpose(
 
     @Serializer(invcontroltowerresourcepurpose::class)
     actual companion object : KSerializer<invcontroltowerresourcepurpose> {
+        actual fun getItem(id: Int): invcontroltowerresourcepurpose = callEndpoint(this::getItem, requestClient, id)
+        actual fun allItems(): List<invcontroltowerresourcepurpose> = callEndpoint(this::allItems, requestClient)
         actual override val descriptor: SerialDescriptor =
             object : SerialClassDescImpl("invcontroltowerresourcepurpose") {
                 init {
@@ -51,14 +56,8 @@ actual data class invcontroltowerresourcepurpose(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_purpose = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> temp_purpose =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     1 -> temp_purposeText = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

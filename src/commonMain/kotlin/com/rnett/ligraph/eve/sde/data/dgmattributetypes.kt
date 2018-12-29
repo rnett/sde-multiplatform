@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -21,6 +22,8 @@ expect class dgmattributetype {
 
     @Serializer(dgmattributetype::class)
     companion object : KSerializer<dgmattributetype> {
+        fun getItem(id: Int): dgmattributetype
+        fun allItems(): List<dgmattributetype>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: dgmattributetype)

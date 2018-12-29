@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -12,6 +13,8 @@ expect class maplocationscene {
 
     @Serializer(maplocationscene::class)
     companion object : KSerializer<maplocationscene> {
+        fun getItem(id: Int): maplocationscene
+        fun allItems(): List<maplocationscene>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: maplocationscene)

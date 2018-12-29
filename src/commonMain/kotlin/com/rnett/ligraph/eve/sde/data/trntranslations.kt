@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -14,6 +15,8 @@ expect class trntranslation {
 
     @Serializer(trntranslation::class)
     companion object : KSerializer<trntranslation> {
+        fun getItem(id: Int): trntranslation
+        fun allItems(): List<trntranslation>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: trntranslation)

@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -17,6 +18,8 @@ expect class invposition {
 
     @Serializer(invposition::class)
     companion object : KSerializer<invposition> {
+        fun getItem(id: Int): invposition
+        fun allItems(): List<invposition>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invposition)

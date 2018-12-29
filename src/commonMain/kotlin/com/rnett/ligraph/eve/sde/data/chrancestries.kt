@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -22,6 +23,8 @@ expect class chrancestry {
 
     @Serializer(chrancestry::class)
     companion object : KSerializer<chrancestry> {
+        fun getItem(id: Int): chrancestry
+        fun allItems(): List<chrancestry>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrancestry)

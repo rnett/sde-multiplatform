@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -20,6 +21,8 @@ expect class ramassemblylinetype {
 
     @Serializer(ramassemblylinetype::class)
     companion object : KSerializer<ramassemblylinetype> {
+        fun getItem(id: Int): ramassemblylinetype
+        fun allItems(): List<ramassemblylinetype>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: ramassemblylinetype)

@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -24,6 +25,8 @@ expect class mapregion {
 
     @Serializer(mapregion::class)
     companion object : KSerializer<mapregion> {
+        fun getItem(id: Int): mapregion
+        fun allItems(): List<mapregion>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapregion)

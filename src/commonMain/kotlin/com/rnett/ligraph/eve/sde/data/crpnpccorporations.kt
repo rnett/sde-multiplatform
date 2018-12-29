@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -38,6 +39,8 @@ expect class crpnpccorporation {
 
     @Serializer(crpnpccorporation::class)
     companion object : KSerializer<crpnpccorporation> {
+        fun getItem(id: Int): crpnpccorporation
+        fun allItems(): List<crpnpccorporation>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: crpnpccorporation)

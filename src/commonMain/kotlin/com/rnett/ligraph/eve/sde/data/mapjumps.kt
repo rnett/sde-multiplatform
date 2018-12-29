@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -12,6 +13,8 @@ expect class mapjump {
 
     @Serializer(mapjump::class)
     companion object : KSerializer<mapjump> {
+        fun getItem(id: Int): mapjump
+        fun allItems(): List<mapjump>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapjump)

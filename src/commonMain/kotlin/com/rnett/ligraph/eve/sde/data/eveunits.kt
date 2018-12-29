@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -14,6 +15,8 @@ expect class eveunit {
 
     @Serializer(eveunit::class)
     companion object : KSerializer<eveunit> {
+        fun getItem(id: Int): eveunit
+        fun allItems(): List<eveunit>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: eveunit)

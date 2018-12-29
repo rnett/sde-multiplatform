@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -21,6 +22,8 @@ expect class stastationtype {
 
     @Serializer(stastationtype::class)
     companion object : KSerializer<stastationtype> {
+        fun getItem(id: Int): stastationtype
+        fun allItems(): List<stastationtype>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: stastationtype)

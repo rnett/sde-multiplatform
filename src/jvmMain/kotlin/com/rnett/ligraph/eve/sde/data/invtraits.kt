@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -8,6 +9,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object invtraits : IntIdTable("invtraits", "traitID") {
     // Database Columns
@@ -26,10 +28,13 @@ object invtraits : IntIdTable("invtraits", "traitID") {
 }
 
 
+
 actual class invtrait(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(invtrait::class)
     actual companion object : IntEntityClass<invtrait>(invtraits), KSerializer<invtrait> {
+        actual fun getItem(id: Int) = transaction { super.get(id) }
+        actual fun allItems() = transaction { super.all().toList() }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invtrait") {
             init {
                 addElement("traitID")
@@ -82,14 +87,8 @@ actual class invtrait(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

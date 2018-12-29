@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -13,6 +14,8 @@ expect class skinlicense {
 
     @Serializer(skinlicense::class)
     companion object : KSerializer<skinlicense> {
+        fun getItem(id: Int): skinlicense
+        fun allItems(): List<skinlicense>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: skinlicense)

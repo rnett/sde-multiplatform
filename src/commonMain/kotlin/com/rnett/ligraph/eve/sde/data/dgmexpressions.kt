@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -21,6 +22,8 @@ expect class dgmexpression {
 
     @Serializer(dgmexpression::class)
     companion object : KSerializer<dgmexpression> {
+        fun getItem(id: Int): dgmexpression
+        fun allItems(): List<dgmexpression>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: dgmexpression)

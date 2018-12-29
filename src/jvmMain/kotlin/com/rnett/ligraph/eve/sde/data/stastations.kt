@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -8,6 +9,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object stastations : LongIdTable("stastations", "stationID") {
     // Database Columns
@@ -33,10 +35,13 @@ object stastations : LongIdTable("stastations", "stationID") {
 }
 
 
+
 actual class stastation(val myId: EntityID<Long>) : LongEntity(myId) {
 
     @Serializer(stastation::class)
     actual companion object : LongEntityClass<stastation>(stastations), KSerializer<stastation> {
+        actual fun getItem(id: Long) = transaction { super.get(id) }
+        actual fun allItems() = transaction { super.all().toList() }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("stastation") {
             init {
                 addElement("stationID")

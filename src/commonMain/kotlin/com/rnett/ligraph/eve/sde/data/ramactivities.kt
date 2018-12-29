@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -16,6 +17,8 @@ expect class ramactivity {
 
     @Serializer(ramactivity::class)
     companion object : KSerializer<ramactivity> {
+        fun getItem(id: Int): ramactivity
+        fun allItems(): List<ramactivity>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: ramactivity)

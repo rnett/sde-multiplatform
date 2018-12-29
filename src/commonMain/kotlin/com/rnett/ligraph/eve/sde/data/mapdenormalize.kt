@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -26,6 +27,8 @@ expect class mapdenormalize {
 
     @Serializer(mapdenormalize::class)
     companion object : KSerializer<mapdenormalize> {
+        fun getItem(id: Int): mapdenormalize
+        fun allItems(): List<mapdenormalize>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapdenormalize)

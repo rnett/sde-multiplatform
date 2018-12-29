@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -8,6 +9,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object mapsolarsystems : IntIdTable("mapsolarsystems", "solarSystemID") {
     // Database Columns
@@ -47,10 +49,13 @@ object mapsolarsystems : IntIdTable("mapsolarsystems", "solarSystemID") {
 }
 
 
+
 actual class mapsolarsystem(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(mapsolarsystem::class)
     actual companion object : IntEntityClass<mapsolarsystem>(mapsolarsystems), KSerializer<mapsolarsystem> {
+        actual fun getItem(id: Int) = transaction { super.get(id) }
+        actual fun allItems() = transaction { super.all().toList() }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapsolarsystem") {
             init {
                 addElement("regionID")
@@ -223,14 +228,8 @@ actual class mapsolarsystem(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    2 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    2 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

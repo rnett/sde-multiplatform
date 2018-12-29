@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -23,6 +24,8 @@ expect class mapuniverse {
 
     @Serializer(mapuniverse::class)
     companion object : KSerializer<mapuniverse> {
+        fun getItem(id: Int): mapuniverse
+        fun allItems(): List<mapuniverse>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapuniverse)

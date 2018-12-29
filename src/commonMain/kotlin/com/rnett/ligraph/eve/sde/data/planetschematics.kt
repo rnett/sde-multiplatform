@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -14,6 +15,8 @@ expect class planetschematic {
 
     @Serializer(planetschematic::class)
     companion object : KSerializer<planetschematic> {
+        fun getItem(id: Int): planetschematic
+        fun allItems(): List<planetschematic>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: planetschematic)

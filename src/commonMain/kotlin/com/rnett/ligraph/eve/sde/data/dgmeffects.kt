@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -38,6 +39,8 @@ expect class dgmeffect {
 
     @Serializer(dgmeffect::class)
     companion object : KSerializer<dgmeffect> {
+        fun getItem(id: Int): dgmeffect
+        fun allItems(): List<dgmeffect>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: dgmeffect)

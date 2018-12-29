@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -12,6 +13,8 @@ expect class industryblueprint {
 
     @Serializer(industryblueprint::class)
     companion object : KSerializer<industryblueprint> {
+        fun getItem(id: Int): industryblueprint
+        fun allItems(): List<industryblueprint>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: industryblueprint)

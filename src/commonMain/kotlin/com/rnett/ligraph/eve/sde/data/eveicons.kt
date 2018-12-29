@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -13,6 +14,8 @@ expect class eveicon {
 
     @Serializer(eveicon::class)
     companion object : KSerializer<eveicon> {
+        fun getItem(id: Int): eveicon
+        fun allItems(): List<eveicon>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: eveicon)

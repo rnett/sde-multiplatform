@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -22,6 +23,8 @@ expect class chrfaction {
 
     @Serializer(chrfaction::class)
     companion object : KSerializer<chrfaction> {
+        fun getItem(id: Int): chrfaction
+        fun allItems(): List<chrfaction>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrfaction)

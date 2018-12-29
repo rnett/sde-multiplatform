@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -15,6 +16,8 @@ expect class invmetagroup {
 
     @Serializer(invmetagroup::class)
     companion object : KSerializer<invmetagroup> {
+        fun getItem(id: Int): invmetagroup
+        fun allItems(): List<invmetagroup>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invmetagroup)

@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -12,6 +13,8 @@ expect class warcombatzonesystem {
 
     @Serializer(warcombatzonesystem::class)
     companion object : KSerializer<warcombatzonesystem> {
+        fun getItem(id: Int): warcombatzonesystem
+        fun allItems(): List<warcombatzonesystem>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: warcombatzonesystem)

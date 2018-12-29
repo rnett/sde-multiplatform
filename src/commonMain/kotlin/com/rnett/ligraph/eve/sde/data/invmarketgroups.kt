@@ -1,3 +1,4 @@
+
 package com.rnett.ligraph.eve.sde.data
 
 
@@ -17,6 +18,8 @@ expect class invmarketgroup {
 
     @Serializer(invmarketgroup::class)
     companion object : KSerializer<invmarketgroup> {
+        fun getItem(id: Int): invmarketgroup
+        fun allItems(): List<invmarketgroup>
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invmarketgroup)
