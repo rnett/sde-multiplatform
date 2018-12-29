@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = chrancestry.Companion::class)
 expect class chrancestry {
     val ancestryID: Int
     val ancestryName: String
@@ -25,6 +26,8 @@ expect class chrancestry {
     companion object : KSerializer<chrancestry> {
         fun getItem(id: Int): chrancestry
         fun allItems(): List<chrancestry>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrancestry)
@@ -34,4 +37,8 @@ expect class chrancestry {
         fun serializer(): KSerializer<chrancestry>
     }
 }
+
+operator fun chrancestry.Companion.get(id: Int) = getItem(id)
+operator fun chrancestry.Companion.invoke() = allItems()
+
 

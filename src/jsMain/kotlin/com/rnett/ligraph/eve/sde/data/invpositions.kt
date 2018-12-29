@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invposition.Companion::class)
 actual data class invposition(
     actual val itemID: Int,
     actual val x: Double,
@@ -17,6 +18,8 @@ actual data class invposition(
     actual val pitch: Float,
     actual val roll: Float
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invposition)
             return false
@@ -31,6 +34,8 @@ actual data class invposition(
     actual companion object : KSerializer<invposition> {
         actual fun getItem(id: Int): invposition = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invposition> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invposition") {
             init {
                 addElement("itemID")
@@ -95,8 +100,14 @@ actual data class invposition(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_itemID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_itemID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_x = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

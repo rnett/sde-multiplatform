@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = mapuniverse.Companion::class)
 actual data class mapuniverse(
     actual val universeID: Int,
     actual val universeName: String,
@@ -22,6 +23,8 @@ actual data class mapuniverse(
     actual val zMax: Double,
     actual val radius: Double
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is mapuniverse)
             return false
@@ -38,6 +41,8 @@ actual data class mapuniverse(
     actual companion object : KSerializer<mapuniverse> {
         actual fun getItem(id: Int): mapuniverse = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<mapuniverse> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapuniverse") {
             init {
                 addElement("universeID")
@@ -137,8 +142,14 @@ actual data class mapuniverse(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_universeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_universeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_universeName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

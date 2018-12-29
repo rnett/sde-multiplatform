@@ -8,12 +8,15 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = crpnpcdivision.Companion::class)
 actual data class crpnpcdivision(
     actual val divisionID: Int,
     actual val divisionName: String,
     actual val description: String,
     actual val leaderType: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is crpnpcdivision)
             return false
@@ -30,6 +33,8 @@ actual data class crpnpcdivision(
     actual companion object : KSerializer<crpnpcdivision> {
         actual fun getItem(id: Int): crpnpcdivision = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<crpnpcdivision> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("crpnpcdivision") {
             init {
                 addElement("divisionID")
@@ -73,8 +78,14 @@ actual data class crpnpcdivision(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_divisionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_divisionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_divisionName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invgroup.Companion::class)
 actual data class invgroup(
     actual val groupID: Int,
     actual val categoryID: Int,
@@ -19,6 +20,11 @@ actual data class invgroup(
     actual val fittableNonSingleton: Boolean,
     actual val published: Boolean
 ) {
+    actual val category: invcategory get() = getCategory(this)
+    actual val dgmexpressia: List<dgmexpression> get() = getDgmexpressia(this)
+    actual val invtypes_rk: List<invtype> get() = getInvtypes_rk(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invgroup)
             return false
@@ -35,6 +41,15 @@ actual data class invgroup(
     actual companion object : KSerializer<invgroup> {
         actual fun getItem(id: Int): invgroup = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invgroup> = callEndpoint(this::allItems, requestClient)
+
+        actual fun getCategory(item: invgroup): invcategory = callEndpoint(this::getCategory, requestClient, item)
+
+        actual fun getDgmexpressia(item: invgroup): List<dgmexpression> =
+            callEndpoint(this::getDgmexpressia, requestClient, item)
+
+        actual fun getInvtypes_rk(item: invgroup): List<invtype> =
+            callEndpoint(this::getInvtypes_rk, requestClient, item)
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invgroup") {
             init {
                 addElement("groupID")
@@ -113,10 +128,22 @@ actual data class invgroup(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_groupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_categoryID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_groupID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_categoryID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     2 -> temp_groupName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -125,8 +152,14 @@ actual data class invgroup(
                             )
                         )
                     ).toString()
-                    3 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    3 -> temp_iconID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     4 -> temp_useBasePrice = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = mapsolarsystem.Companion::class)
 actual data class mapsolarsystem(
     actual val regionID: Int,
     actual val constellationID: Int,
@@ -36,6 +37,10 @@ actual data class mapsolarsystem(
     actual val sunTypeID: Int,
     actual val securityClass: String
 ) {
+    actual val constellation_fk: mapconstellation get() = getConstellation_fk(this)
+    actual val region: mapregion get() = getRegion(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is mapsolarsystem)
             return false
@@ -52,6 +57,13 @@ actual data class mapsolarsystem(
     actual companion object : KSerializer<mapsolarsystem> {
         actual fun getItem(id: Int): mapsolarsystem = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<mapsolarsystem> = callEndpoint(this::allItems, requestClient)
+
+        actual fun getConstellation_fk(item: mapsolarsystem): mapconstellation =
+            callEndpoint(this::getConstellation_fk, requestClient, item)
+
+        actual fun getRegion(item: mapsolarsystem): mapregion = callEndpoint(this::getRegion, requestClient, item)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapsolarsystem") {
             init {
                 addElement("regionID")
@@ -249,12 +261,30 @@ actual data class mapsolarsystem(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_regionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_constellationID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    2 -> temp_solarSystemID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_regionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_constellationID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    2 -> temp_solarSystemID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     3 -> temp_solarSystemName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -407,8 +437,14 @@ actual data class mapsolarsystem(
                             )
                         )
                     ).toDouble()
-                    22 -> temp_factionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    22 -> temp_factionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     23 -> temp_radius = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -417,8 +453,14 @@ actual data class mapsolarsystem(
                             )
                         )
                     ).toDouble()
-                    24 -> temp_sunTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    24 -> temp_sunTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     25 -> temp_securityClass = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

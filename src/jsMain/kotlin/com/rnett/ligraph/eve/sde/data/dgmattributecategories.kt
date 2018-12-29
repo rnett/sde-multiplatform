@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = dgmattributecategory.Companion::class)
 actual data class dgmattributecategory(
     actual val categoryID: Int,
     actual val categoryName: String,
     actual val categoryDescription: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is dgmattributecategory)
             return false
@@ -29,6 +32,8 @@ actual data class dgmattributecategory(
     actual companion object : KSerializer<dgmattributecategory> {
         actual fun getItem(id: Int): dgmattributecategory = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<dgmattributecategory> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("dgmattributecategory") {
             init {
                 addElement("categoryID")
@@ -65,8 +70,14 @@ actual data class dgmattributecategory(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_categoryID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_categoryID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_categoryName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

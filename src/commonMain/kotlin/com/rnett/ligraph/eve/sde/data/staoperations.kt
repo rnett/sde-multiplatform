@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = staoperation.Companion::class)
 expect class staoperation {
     val activityID: Int
     val operationID: Int
@@ -28,6 +29,8 @@ expect class staoperation {
     companion object : KSerializer<staoperation> {
         fun getItem(id: Int): staoperation
         fun allItems(): List<staoperation>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: staoperation)
@@ -37,4 +40,8 @@ expect class staoperation {
         fun serializer(): KSerializer<staoperation>
     }
 }
+
+operator fun staoperation.Companion.get(id: Int) = getItem(id)
+operator fun staoperation.Companion.invoke() = allItems()
+
 

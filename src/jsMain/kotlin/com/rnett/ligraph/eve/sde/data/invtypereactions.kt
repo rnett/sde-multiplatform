@@ -8,12 +8,15 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invtypereaction.Companion::class)
 actual data class invtypereaction(
     actual val reactionTypeID: Int,
     actual val input: Boolean,
     actual val typeID: Int,
     actual val quantity: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invtypereaction)
             return false
@@ -28,6 +31,8 @@ actual data class invtypereaction(
     actual companion object : KSerializer<invtypereaction> {
         actual fun getItem(id: Int): invtypereaction = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invtypereaction> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invtypereaction") {
             init {
                 addElement("reactionTypeID")
@@ -71,8 +76,14 @@ actual data class invtypereaction(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_reactionTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_reactionTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_input = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -81,10 +92,22 @@ actual data class invtypereaction(
                             )
                         )
                     ).toBoolean()
-                    2 -> temp_typeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    3 -> temp_quantity =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_typeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    3 -> temp_quantity = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

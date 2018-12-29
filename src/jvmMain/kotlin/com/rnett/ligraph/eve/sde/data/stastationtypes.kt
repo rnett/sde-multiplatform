@@ -28,7 +28,7 @@ object stastationtypes : IntIdTable("stastationtypes", "stationTypeID") {
 }
 
 
-
+@Serializable(with = stastationtype.Companion::class)
 actual class stastationtype(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(stastationtype::class)
@@ -117,8 +117,14 @@ actual class stastationtype(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> id = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

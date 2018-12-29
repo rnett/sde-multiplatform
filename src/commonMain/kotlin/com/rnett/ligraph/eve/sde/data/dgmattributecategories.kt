@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = dgmattributecategory.Companion::class)
 expect class dgmattributecategory {
     val categoryID: Int
     val categoryName: String
@@ -17,6 +18,8 @@ expect class dgmattributecategory {
     companion object : KSerializer<dgmattributecategory> {
         fun getItem(id: Int): dgmattributecategory
         fun allItems(): List<dgmattributecategory>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: dgmattributecategory)
@@ -26,4 +29,8 @@ expect class dgmattributecategory {
         fun serializer(): KSerializer<dgmattributecategory>
     }
 }
+
+operator fun dgmattributecategory.Companion.get(id: Int) = getItem(id)
+operator fun dgmattributecategory.Companion.invoke() = allItems()
+
 

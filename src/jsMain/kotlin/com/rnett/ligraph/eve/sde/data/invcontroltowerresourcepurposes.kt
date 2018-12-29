@@ -8,10 +8,13 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invcontroltowerresourcepurpose.Companion::class)
 actual data class invcontroltowerresourcepurpose(
     actual val purpose: Int,
     actual val purposeText: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invcontroltowerresourcepurpose)
             return false
@@ -26,6 +29,8 @@ actual data class invcontroltowerresourcepurpose(
     actual companion object : KSerializer<invcontroltowerresourcepurpose> {
         actual fun getItem(id: Int): invcontroltowerresourcepurpose = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invcontroltowerresourcepurpose> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor =
             object : SerialClassDescImpl("invcontroltowerresourcepurpose") {
                 init {
@@ -56,8 +61,14 @@ actual data class invcontroltowerresourcepurpose(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_purpose =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_purpose = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_purposeText = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

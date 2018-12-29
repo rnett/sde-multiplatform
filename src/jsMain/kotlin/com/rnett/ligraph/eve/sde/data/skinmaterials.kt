@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = skinmaterial.Companion::class)
 actual data class skinmaterial(
     actual val skinMaterialID: Int,
     actual val displayNameID: Int,
     actual val materialSetID: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is skinmaterial)
             return false
@@ -27,6 +30,8 @@ actual data class skinmaterial(
     actual companion object : KSerializer<skinmaterial> {
         actual fun getItem(id: Int): skinmaterial = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<skinmaterial> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("skinmaterial") {
             init {
                 addElement("skinMaterialID")
@@ -63,12 +68,30 @@ actual data class skinmaterial(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_skinMaterialID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_displayNameID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    2 -> temp_materialSetID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_skinMaterialID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_displayNameID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    2 -> temp_materialSetID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

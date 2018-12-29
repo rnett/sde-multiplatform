@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = mapconstellation.Companion::class)
 actual data class mapconstellation(
     actual val regionID: Int,
     actual val constellationID: Int,
@@ -24,6 +25,10 @@ actual data class mapconstellation(
     actual val factionID: Int,
     actual val radius: Double
 ) {
+    actual val region: mapregion get() = getRegion(this)
+    actual val mapsolarsystems_rk: List<mapsolarsystem> get() = getMapsolarsystems_rk(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is mapconstellation)
             return false
@@ -40,6 +45,12 @@ actual data class mapconstellation(
     actual companion object : KSerializer<mapconstellation> {
         actual fun getItem(id: Int): mapconstellation = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<mapconstellation> = callEndpoint(this::allItems, requestClient)
+
+        actual fun getRegion(item: mapconstellation): mapregion = callEndpoint(this::getRegion, requestClient, item)
+
+        actual fun getMapsolarsystems_rk(item: mapconstellation): List<mapsolarsystem> =
+            callEndpoint(this::getMapsolarsystems_rk, requestClient, item)
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapconstellation") {
             init {
                 addElement("regionID")
@@ -153,10 +164,22 @@ actual data class mapconstellation(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_regionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_constellationID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_regionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_constellationID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     2 -> temp_constellationName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -237,8 +260,14 @@ actual data class mapconstellation(
                             )
                         )
                     ).toDouble()
-                    12 -> temp_factionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    12 -> temp_factionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     13 -> temp_radius = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -13,108 +13,116 @@ import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object invcategories : IntIdTable("invcategories", "categoryID") {
-    // Database Columns
+	// Database Columns
 
-    val categoryID = integer("categoryID").primaryKey()
-    val categoryName = varchar("categoryName", 100)
-    val iconID = integer("iconID")
-    val published = bool("published")
+	val categoryID = integer("categoryID").primaryKey()
+	val categoryName = varchar("categoryName", 100)
+	val iconID = integer("iconID")
+	val published = bool("published")
 
 
-    // Referencing/Exported Keys (One to Many)
+	// Referencing/Exported Keys (One to Many)
 
-    // 1 keys.  Not present in object
+	// 1 keys.  Not present in object
 }
 
 
-
+@Serializable(with = invcategory.Companion::class)
 actual class invcategory(val myId: EntityID<Int>) : IntEntity(myId) {
 
-    @Serializer(invcategory::class)
-    actual companion object : IntEntityClass<invcategory>(invcategories), KSerializer<invcategory> {
-        actual fun getItem(id: Int) = transaction { super.get(id) }
-        actual fun allItems() = transaction { super.all().toList() }
-        actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invcategory") {
-            init {
-                addElement("categoryID")
-                addElement("categoryName")
-                addElement("iconID")
-                addElement("published")
-            }
-        }
+	@Serializer(invcategory::class)
+	actual companion object : IntEntityClass<invcategory>(invcategories), KSerializer<invcategory> {
+		actual fun getItem(id: Int) = transaction { super.get(id) }
+		actual fun allItems() = transaction { super.all().toList() }
+		actual fun getInvgroups_rk(item: invcategory): List<invgroup> = transaction { item.invgroups_rk }
+		actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invcategory") {
+			init {
+				addElement("categoryID")
+				addElement("categoryName")
+				addElement("iconID")
+				addElement("published")
+			}
+		}
 
-        actual override fun serialize(output: Encoder, obj: invcategory) {
-            val compositeOutput: CompositeEncoder = output.beginStructure(descriptor)
-            compositeOutput.encodeStringElement(
-                descriptor,
-                0,
-                HexConverter.printHexBinary(obj.categoryID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                1,
-                HexConverter.printHexBinary(obj.categoryName.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                2,
-                HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                3,
-                HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
-            )
-            compositeOutput.endStructure(descriptor)
-        }
+		actual override fun serialize(output: Encoder, obj: invcategory) {
+			val compositeOutput: CompositeEncoder = output.beginStructure(descriptor)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				0,
+				HexConverter.printHexBinary(obj.categoryID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				1,
+				HexConverter.printHexBinary(obj.categoryName.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				2,
+				HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				3,
+				HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
+			)
+			compositeOutput.endStructure(descriptor)
+		}
 
-        actual override fun deserialize(input: Decoder): invcategory {
-            val inp: CompositeDecoder = input.beginStructure(descriptor)
-            var id: Int? = null
-            loop@ while (true) {
-                when (val i = inp.decodeElementIndex(descriptor)) {
-                    CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
-                }
-            }
+		actual override fun deserialize(input: Decoder): invcategory {
+			val inp: CompositeDecoder = input.beginStructure(descriptor)
+			var id: Int? = null
+			loop@ while (true) {
+				when (val i = inp.decodeElementIndex(descriptor)) {
+					CompositeDecoder.READ_DONE -> break@loop
+					0 -> id = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
+				}
+			}
 
-            inp.endStructure(descriptor)
-            if (id == null)
-                throw SerializationException("Id 'categoryID' @ index 0 not found")
-            else
-                return invcategory[id]
-        }
+			inp.endStructure(descriptor)
+			if (id == null)
+				throw SerializationException("Id 'categoryID' @ index 0 not found")
+			else
+				return invcategory[id]
+		}
 
-        actual fun serializer(): KSerializer<invcategory> = this
-    }
+		actual fun serializer(): KSerializer<invcategory> = this
+	}
 
-    // Database Columns
+	// Database Columns
 
-    actual val categoryID by invcategories.categoryID
-    actual val categoryName by invcategories.categoryName
-    actual val iconID by invcategories.iconID
-    actual val published by invcategories.published
-
-
-    // Referencing/Exported Keys (One to Many)
-
-    val invgroups_rk: SizedIterable<invgroup> by invgroup referrersOn invgroups.category
-
-
-    // Helper Methods
-
-    actual override fun equals(other: Any?): Boolean {
-        if (other == null || other !is invcategory)
-            return false
-        return categoryID == other.categoryID
-    }
+	actual val categoryID by invcategories.categoryID
+	actual val categoryName by invcategories.categoryName
+	actual val iconID by invcategories.iconID
+	actual val published by invcategories.published
 
 
-    actual override fun hashCode() = categoryID
+	// Referencing/Exported Keys (One to Many)
+
+	val _invgroups_rk: SizedIterable<invgroup> by invgroup referrersOn invgroups.category
+	actual val invgroups_rk: List<invgroup> get() = _invgroups_rk.toList()
 
 
-    actual override fun toString() = categoryName
+	// Helper Methods
+
+	actual override fun equals(other: Any?): Boolean {
+		if (other == null || other !is invcategory)
+			return false
+		return categoryID == other.categoryID
+	}
+
+
+	actual override fun hashCode() = categoryID
+
+
+	actual override fun toString() = categoryName
 }
 

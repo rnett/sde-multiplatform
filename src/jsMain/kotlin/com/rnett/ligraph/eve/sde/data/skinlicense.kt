@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = skinlicense.Companion::class)
 actual data class skinlicense(
     actual val licenseTypeID: Int,
     actual val duration: Int,
     actual val skinID: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is skinlicense)
             return false
@@ -27,6 +30,8 @@ actual data class skinlicense(
     actual companion object : KSerializer<skinlicense> {
         actual fun getItem(id: Int): skinlicense = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<skinlicense> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("skinlicense") {
             init {
                 addElement("licenseTypeID")
@@ -63,12 +68,30 @@ actual data class skinlicense(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_licenseTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_duration =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    2 -> temp_skinID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_licenseTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_duration = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    2 -> temp_skinID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

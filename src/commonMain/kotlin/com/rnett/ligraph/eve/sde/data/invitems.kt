@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = invitem.Companion::class)
 expect class invitem {
     val itemID: Int
     val typeID: Int
@@ -19,6 +20,8 @@ expect class invitem {
     companion object : KSerializer<invitem> {
         fun getItem(id: Int): invitem
         fun allItems(): List<invitem>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invitem)
@@ -28,4 +31,8 @@ expect class invitem {
         fun serializer(): KSerializer<invitem>
     }
 }
+
+operator fun invitem.Companion.get(id: Int) = getItem(id)
+operator fun invitem.Companion.invoke() = allItems()
+
 

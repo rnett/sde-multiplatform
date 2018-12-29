@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = stastation.Companion::class)
 expect class stastation {
     val stationID: Long
     val security: Double
@@ -32,6 +33,8 @@ expect class stastation {
     companion object : KSerializer<stastation> {
         fun getItem(id: Long): stastation
         fun allItems(): List<stastation>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: stastation)
@@ -41,4 +44,8 @@ expect class stastation {
         fun serializer(): KSerializer<stastation>
     }
 }
+
+operator fun stastation.Companion.get(id: Long) = getItem(id)
+operator fun stastation.Companion.invoke() = allItems()
+
 

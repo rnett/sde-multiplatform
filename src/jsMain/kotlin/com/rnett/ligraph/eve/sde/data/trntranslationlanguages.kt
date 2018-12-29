@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = trntranslationlanguage.Companion::class)
 actual data class trntranslationlanguage(
     actual val numericLanguageID: Int,
     actual val languageID: String,
     actual val languageName: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is trntranslationlanguage)
             return false
@@ -29,6 +32,8 @@ actual data class trntranslationlanguage(
     actual companion object : KSerializer<trntranslationlanguage> {
         actual fun getItem(id: Int): trntranslationlanguage = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<trntranslationlanguage> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("trntranslationlanguage") {
             init {
                 addElement("numericLanguageID")
@@ -65,8 +70,14 @@ actual data class trntranslationlanguage(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_numericLanguageID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_numericLanguageID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_languageID = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

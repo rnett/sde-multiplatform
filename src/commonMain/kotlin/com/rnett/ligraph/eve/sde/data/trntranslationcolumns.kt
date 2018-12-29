@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = trntranslationcolumn.Companion::class)
 expect class trntranslationcolumn {
     val tcGroupID: Int
     val tcID: Int
@@ -18,6 +19,8 @@ expect class trntranslationcolumn {
     companion object : KSerializer<trntranslationcolumn> {
         fun getItem(id: Int): trntranslationcolumn
         fun allItems(): List<trntranslationcolumn>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: trntranslationcolumn)
@@ -27,4 +30,8 @@ expect class trntranslationcolumn {
         fun serializer(): KSerializer<trntranslationcolumn>
     }
 }
+
+operator fun trntranslationcolumn.Companion.get(id: Int) = getItem(id)
+operator fun trntranslationcolumn.Companion.invoke() = allItems()
+
 

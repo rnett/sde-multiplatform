@@ -8,10 +8,13 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = agtagenttype.Companion::class)
 actual data class agtagenttype(
     actual val agentTypeID: Int,
     actual val agentType: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is agtagenttype)
             return false
@@ -26,6 +29,8 @@ actual data class agtagenttype(
     actual companion object : KSerializer<agtagenttype> {
         actual fun getItem(id: Int): agtagenttype = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<agtagenttype> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("agtagenttype") {
             init {
                 addElement("agentTypeID")
@@ -55,8 +60,14 @@ actual data class agtagenttype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_agentTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_agentTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_agentType = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

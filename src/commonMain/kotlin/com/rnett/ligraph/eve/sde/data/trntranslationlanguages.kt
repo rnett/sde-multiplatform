@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = trntranslationlanguage.Companion::class)
 expect class trntranslationlanguage {
     val numericLanguageID: Int
     val languageID: String
@@ -17,6 +18,8 @@ expect class trntranslationlanguage {
     companion object : KSerializer<trntranslationlanguage> {
         fun getItem(id: Int): trntranslationlanguage
         fun allItems(): List<trntranslationlanguage>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: trntranslationlanguage)
@@ -26,4 +29,8 @@ expect class trntranslationlanguage {
         fun serializer(): KSerializer<trntranslationlanguage>
     }
 }
+
+operator fun trntranslationlanguage.Companion.get(id: Int) = getItem(id)
+operator fun trntranslationlanguage.Companion.invoke() = allItems()
+
 

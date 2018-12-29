@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = chrfaction.Companion::class)
 expect class chrfaction {
     val factionID: Int
     val factionName: String
@@ -25,6 +26,8 @@ expect class chrfaction {
     companion object : KSerializer<chrfaction> {
         fun getItem(id: Int): chrfaction
         fun allItems(): List<chrfaction>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrfaction)
@@ -34,4 +37,8 @@ expect class chrfaction {
         fun serializer(): KSerializer<chrfaction>
     }
 }
+
+operator fun chrfaction.Companion.get(id: Int) = getItem(id)
+operator fun chrfaction.Companion.invoke() = allItems()
+
 

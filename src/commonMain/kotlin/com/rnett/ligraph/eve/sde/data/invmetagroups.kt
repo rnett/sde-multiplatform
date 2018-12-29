@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = invmetagroup.Companion::class)
 expect class invmetagroup {
     val metaGroupID: Int
     val metaGroupName: String
@@ -18,6 +19,8 @@ expect class invmetagroup {
     companion object : KSerializer<invmetagroup> {
         fun getItem(id: Int): invmetagroup
         fun allItems(): List<invmetagroup>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invmetagroup)
@@ -27,4 +30,8 @@ expect class invmetagroup {
         fun serializer(): KSerializer<invmetagroup>
     }
 }
+
+operator fun invmetagroup.Companion.get(id: Int) = getItem(id)
+operator fun invmetagroup.Companion.invoke() = allItems()
+
 

@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = invflag.Companion::class)
 expect class invflag {
     val flagID: Int
     val flagName: String
@@ -18,6 +19,8 @@ expect class invflag {
     companion object : KSerializer<invflag> {
         fun getItem(id: Int): invflag
         fun allItems(): List<invflag>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invflag)
@@ -27,4 +30,8 @@ expect class invflag {
         fun serializer(): KSerializer<invflag>
     }
 }
+
+operator fun invflag.Companion.get(id: Int) = getItem(id)
+operator fun invflag.Companion.invoke() = allItems()
+
 

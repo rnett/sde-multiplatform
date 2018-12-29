@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = ramassemblylinetype.Companion::class)
 actual data class ramassemblylinetype(
     actual val assemblyLineTypeID: Int,
     actual val assemblyLineTypeName: String,
@@ -19,6 +20,8 @@ actual data class ramassemblylinetype(
     actual val activityID: Int,
     actual val minCostPerHour: Double
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is ramassemblylinetype)
             return false
@@ -35,6 +38,8 @@ actual data class ramassemblylinetype(
     actual companion object : KSerializer<ramassemblylinetype> {
         actual fun getItem(id: Int): ramassemblylinetype = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<ramassemblylinetype> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("ramassemblylinetype") {
             init {
                 addElement("assemblyLineTypeID")
@@ -113,8 +118,14 @@ actual data class ramassemblylinetype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_assemblyLineTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_assemblyLineTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_assemblyLineTypeName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -163,8 +174,14 @@ actual data class ramassemblylinetype(
                             )
                         )
                     ).toDouble()
-                    7 -> temp_activityID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    7 -> temp_activityID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     8 -> temp_minCostPerHour = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -8,12 +8,16 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invcategory.Companion::class)
 actual data class invcategory(
     actual val categoryID: Int,
     actual val categoryName: String,
     actual val iconID: Int,
     actual val published: Boolean
 ) {
+    actual val invgroups_rk: List<invgroup> get() = getInvgroups_rk(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invcategory)
             return false
@@ -30,6 +34,11 @@ actual data class invcategory(
     actual companion object : KSerializer<invcategory> {
         actual fun getItem(id: Int): invcategory = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invcategory> = callEndpoint(this::allItems, requestClient)
+
+
+        actual fun getInvgroups_rk(item: invcategory): List<invgroup> =
+            callEndpoint(this::getInvgroups_rk, requestClient, item)
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invcategory") {
             init {
                 addElement("categoryID")
@@ -73,8 +82,14 @@ actual data class invcategory(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_categoryID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_categoryID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_categoryName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -83,8 +98,14 @@ actual data class invcategory(
                             )
                         )
                     ).toString()
-                    2 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_iconID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     3 -> temp_published = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -8,12 +8,15 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = trntranslation.Companion::class)
 actual data class trntranslation(
     actual val tcID: Int,
     actual val keyID: Int,
     actual val languageID: String,
     actual val text: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is trntranslation)
             return false
@@ -28,6 +31,8 @@ actual data class trntranslation(
     actual companion object : KSerializer<trntranslation> {
         actual fun getItem(id: Int): trntranslation = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<trntranslation> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("trntranslation") {
             init {
                 addElement("tcID")
@@ -71,10 +76,22 @@ actual data class trntranslation(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_tcID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_keyID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_tcID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_keyID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     2 -> temp_languageID = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

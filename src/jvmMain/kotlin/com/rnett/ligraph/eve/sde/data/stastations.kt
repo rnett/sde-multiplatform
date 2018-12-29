@@ -35,7 +35,7 @@ object stastations : LongIdTable("stastations", "stationID") {
 }
 
 
-
+@Serializable(with = stastation.Companion::class)
 actual class stastation(val myId: EntityID<Long>) : LongEntity(myId) {
 
     @Serializer(stastation::class)

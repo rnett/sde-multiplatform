@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = mapregion.Companion::class)
 actual data class mapregion(
     actual val regionID: Int,
     actual val regionName: String,
@@ -23,6 +24,10 @@ actual data class mapregion(
     actual val factionID: Int,
     actual val radius: Double
 ) {
+    actual val mapconstellatia: List<mapconstellation> get() = getMapconstellatia(this)
+    actual val mapsolarsystems_rk: List<mapsolarsystem> get() = getMapsolarsystems_rk(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is mapregion)
             return false
@@ -39,6 +44,14 @@ actual data class mapregion(
     actual companion object : KSerializer<mapregion> {
         actual fun getItem(id: Int): mapregion = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<mapregion> = callEndpoint(this::allItems, requestClient)
+
+
+        actual fun getMapconstellatia(item: mapregion): List<mapconstellation> =
+            callEndpoint(this::getMapconstellatia, requestClient, item)
+
+        actual fun getMapsolarsystems_rk(item: mapregion): List<mapsolarsystem> =
+            callEndpoint(this::getMapsolarsystems_rk, requestClient, item)
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapregion") {
             init {
                 addElement("regionID")
@@ -145,8 +158,14 @@ actual data class mapregion(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_regionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_regionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_regionName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -227,8 +246,14 @@ actual data class mapregion(
                             )
                         )
                     ).toDouble()
-                    11 -> temp_factionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    11 -> temp_factionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     12 -> temp_radius = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

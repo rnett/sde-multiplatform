@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = chrbloodline.Companion::class)
 expect class chrbloodline {
     val bloodlineID: Int
     val bloodlineName: String
@@ -31,6 +32,8 @@ expect class chrbloodline {
     companion object : KSerializer<chrbloodline> {
         fun getItem(id: Int): chrbloodline
         fun allItems(): List<chrbloodline>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: chrbloodline)
@@ -40,4 +43,8 @@ expect class chrbloodline {
         fun serializer(): KSerializer<chrbloodline>
     }
 }
+
+operator fun chrbloodline.Companion.get(id: Int) = getItem(id)
+operator fun chrbloodline.Companion.invoke() = allItems()
+
 

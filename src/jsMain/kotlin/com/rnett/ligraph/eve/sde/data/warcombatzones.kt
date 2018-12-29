@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = warcombatzone.Companion::class)
 actual data class warcombatzone(
     actual val combatZoneID: Int,
     actual val combatZoneName: String,
@@ -15,6 +16,8 @@ actual data class warcombatzone(
     actual val centerSystemID: Int,
     actual val description: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is warcombatzone)
             return false
@@ -31,6 +34,8 @@ actual data class warcombatzone(
     actual companion object : KSerializer<warcombatzone> {
         actual fun getItem(id: Int): warcombatzone = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<warcombatzone> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("warcombatzone") {
             init {
                 addElement("combatZoneID")
@@ -81,8 +86,14 @@ actual data class warcombatzone(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_combatZoneID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_combatZoneID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_combatZoneName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -91,10 +102,22 @@ actual data class warcombatzone(
                             )
                         )
                     ).toString()
-                    2 -> temp_factionID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    3 -> temp_centerSystemID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_factionID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    3 -> temp_centerSystemID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     4 -> temp_description = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

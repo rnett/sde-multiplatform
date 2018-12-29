@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invmetatype.Companion::class)
 actual data class invmetatype(
     actual val typeID: Int,
     actual val parentTypeID: Int,
     actual val metaGroupID: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invmetatype)
             return false
@@ -27,6 +30,8 @@ actual data class invmetatype(
     actual companion object : KSerializer<invmetatype> {
         actual fun getItem(id: Int): invmetatype = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invmetatype> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invmetatype") {
             init {
                 addElement("typeID")
@@ -63,12 +68,30 @@ actual data class invmetatype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_typeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_parentTypeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    2 -> temp_metaGroupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_typeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_parentTypeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    2 -> temp_metaGroupID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

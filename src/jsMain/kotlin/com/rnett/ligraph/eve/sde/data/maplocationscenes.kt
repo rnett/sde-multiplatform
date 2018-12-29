@@ -8,10 +8,13 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = maplocationscene.Companion::class)
 actual data class maplocationscene(
     actual val locationID: Int,
     actual val graphicID: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is maplocationscene)
             return false
@@ -26,6 +29,8 @@ actual data class maplocationscene(
     actual companion object : KSerializer<maplocationscene> {
         actual fun getItem(id: Int): maplocationscene = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<maplocationscene> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("maplocationscene") {
             init {
                 addElement("locationID")
@@ -55,10 +60,22 @@ actual data class maplocationscene(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_locationID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_graphicID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_locationID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_graphicID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

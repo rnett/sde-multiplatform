@@ -37,13 +37,16 @@ object invgroups : IntIdTable("invgroups", "groupID") {
 }
 
 
-
+@Serializable(with = invgroup.Companion::class)
 actual class invgroup(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(invgroup::class)
     actual companion object : IntEntityClass<invgroup>(invgroups), KSerializer<invgroup> {
         actual fun getItem(id: Int) = transaction { super.get(id) }
         actual fun allItems() = transaction { super.all().toList() }
+        actual fun getCategory(item: invgroup): invcategory = transaction { item.category }
+        actual fun getDgmexpressia(item: invgroup): List<dgmexpression> = transaction { item.dgmexpressia }
+        actual fun getInvtypes_rk(item: invgroup): List<invtype> = transaction { item.invtypes_rk }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invgroup") {
             init {
                 addElement("groupID")
@@ -114,8 +117,14 @@ actual class invgroup(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> id = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }
@@ -145,13 +154,16 @@ actual class invgroup(val myId: EntityID<Int>) : IntEntity(myId) {
 
     // Foreign/Imported Keys (One to Many)
 
-    val category: invcategory by invcategory referencedOn invgroups.category
+    actual val category: invcategory by invcategory referencedOn invgroups.category
 
 
     // Referencing/Exported Keys (One to Many)
 
-    val dgmexpressia: SizedIterable<dgmexpression> by dgmexpression referrersOn dgmexpressions.expressionGroup
-    val invtypes_rk: SizedIterable<invtype> by invtype referrersOn invtypes.group
+    val _dgmexpressia: SizedIterable<dgmexpression> by dgmexpression referrersOn dgmexpressions.expressionGroup
+    actual val dgmexpressia: List<dgmexpression> get() = _dgmexpressia.toList()
+
+    val _invtypes_rk: SizedIterable<invtype> by invtype referrersOn invtypes.group
+    actual val invtypes_rk: List<invtype> get() = _invtypes_rk.toList()
 
 
     // Helper Methods

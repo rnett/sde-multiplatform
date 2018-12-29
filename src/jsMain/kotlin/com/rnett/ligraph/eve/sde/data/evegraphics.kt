@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = evegraphic.Companion::class)
 actual data class evegraphic(
     actual val graphicID: Int,
     actual val sofFactionName: String,
@@ -16,6 +17,8 @@ actual data class evegraphic(
     actual val sofRaceName: String,
     actual val description: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is evegraphic)
             return false
@@ -30,6 +33,8 @@ actual data class evegraphic(
     actual companion object : KSerializer<evegraphic> {
         actual fun getItem(id: Int): evegraphic = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<evegraphic> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("evegraphic") {
             init {
                 addElement("graphicID")
@@ -87,8 +92,14 @@ actual data class evegraphic(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_graphicID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_graphicID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_sofFactionName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

@@ -42,13 +42,17 @@ object mapconstellations : IntIdTable("mapconstellations", "constellationID") {
 }
 
 
-
+@Serializable(with = mapconstellation.Companion::class)
 actual class mapconstellation(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(mapconstellation::class)
     actual companion object : IntEntityClass<mapconstellation>(mapconstellations), KSerializer<mapconstellation> {
         actual fun getItem(id: Int) = transaction { super.get(id) }
         actual fun allItems() = transaction { super.all().toList() }
+        actual fun getRegion(item: mapconstellation): mapregion = transaction { item.region }
+        actual fun getMapsolarsystems_rk(item: mapconstellation): List<mapsolarsystem> =
+            transaction { item.mapsolarsystems_rk }
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapconstellation") {
             init {
                 addElement("regionID")
@@ -149,8 +153,14 @@ actual class mapconstellation(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    1 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    1 -> id = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }
@@ -185,12 +195,13 @@ actual class mapconstellation(val myId: EntityID<Int>) : IntEntity(myId) {
 
     // Foreign/Imported Keys (One to Many)
 
-    val region: mapregion by mapregion referencedOn mapconstellations.region
+    actual val region: mapregion by mapregion referencedOn mapconstellations.region
 
 
     // Referencing/Exported Keys (One to Many)
 
-    val mapsolarsystems_rk: SizedIterable<mapsolarsystem> by mapsolarsystem referrersOn mapsolarsystems.constellation_fk
+    val _mapsolarsystems_rk: SizedIterable<mapsolarsystem> by mapsolarsystem referrersOn mapsolarsystems.constellation_fk
+    actual val mapsolarsystems_rk: List<mapsolarsystem> get() = _mapsolarsystems_rk.toList()
 
 
     // Helper Methods

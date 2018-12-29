@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = crpactivity.Companion::class)
 actual data class crpactivity(
     actual val activityID: Int,
     actual val activityName: String,
     actual val description: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is crpactivity)
             return false
@@ -29,6 +32,8 @@ actual data class crpactivity(
     actual companion object : KSerializer<crpactivity> {
         actual fun getItem(id: Int): crpactivity = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<crpactivity> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("crpactivity") {
             init {
                 addElement("activityID")
@@ -65,8 +70,14 @@ actual data class crpactivity(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_activityID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_activityID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_activityName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

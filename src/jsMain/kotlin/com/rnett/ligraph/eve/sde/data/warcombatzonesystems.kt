@@ -8,10 +8,13 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = warcombatzonesystem.Companion::class)
 actual data class warcombatzonesystem(
     actual val solarSystemID: Int,
     actual val combatZoneID: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is warcombatzonesystem)
             return false
@@ -26,6 +29,8 @@ actual data class warcombatzonesystem(
     actual companion object : KSerializer<warcombatzonesystem> {
         actual fun getItem(id: Int): warcombatzonesystem = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<warcombatzonesystem> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("warcombatzonesystem") {
             init {
                 addElement("solarSystemID")
@@ -55,10 +60,22 @@ actual data class warcombatzonesystem(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_solarSystemID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_combatZoneID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_solarSystemID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_combatZoneID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = ramassemblylinetype.Companion::class)
 expect class ramassemblylinetype {
     val assemblyLineTypeID: Int
     val assemblyLineTypeName: String
@@ -23,6 +24,8 @@ expect class ramassemblylinetype {
     companion object : KSerializer<ramassemblylinetype> {
         fun getItem(id: Int): ramassemblylinetype
         fun allItems(): List<ramassemblylinetype>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: ramassemblylinetype)
@@ -32,4 +35,8 @@ expect class ramassemblylinetype {
         fun serializer(): KSerializer<ramassemblylinetype>
     }
 }
+
+operator fun ramassemblylinetype.Companion.get(id: Int) = getItem(id)
+operator fun ramassemblylinetype.Companion.invoke() = allItems()
+
 

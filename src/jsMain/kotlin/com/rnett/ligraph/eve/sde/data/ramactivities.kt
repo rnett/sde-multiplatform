@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = ramactivity.Companion::class)
 actual data class ramactivity(
     actual val activityID: Int,
     actual val activityName: String,
@@ -15,6 +16,8 @@ actual data class ramactivity(
     actual val description: String,
     actual val published: Boolean
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is ramactivity)
             return false
@@ -31,6 +34,8 @@ actual data class ramactivity(
     actual companion object : KSerializer<ramactivity> {
         actual fun getItem(id: Int): ramactivity = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<ramactivity> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("ramactivity") {
             init {
                 addElement("activityID")
@@ -81,8 +86,14 @@ actual data class ramactivity(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_activityID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_activityID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_activityName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

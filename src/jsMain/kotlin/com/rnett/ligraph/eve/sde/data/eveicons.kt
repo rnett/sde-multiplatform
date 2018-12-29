@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = eveicon.Companion::class)
 actual data class eveicon(
     actual val iconID: Int,
     actual val iconFile: String,
     actual val description: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is eveicon)
             return false
@@ -27,6 +30,8 @@ actual data class eveicon(
     actual companion object : KSerializer<eveicon> {
         actual fun getItem(id: Int): eveicon = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<eveicon> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("eveicon") {
             init {
                 addElement("iconID")
@@ -63,8 +68,14 @@ actual data class eveicon(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_iconID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_iconFile = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

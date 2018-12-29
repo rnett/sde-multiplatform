@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = dgmattributetype.Companion::class)
 actual data class dgmattributetype(
     actual val attributeID: Int,
     actual val attributeName: String,
@@ -21,6 +22,9 @@ actual data class dgmattributetype(
     actual val highIsGood: Boolean,
     actual val categoryID: Int
 ) {
+    actual val dgmexpressia: List<dgmexpression> get() = getDgmexpressia(this)
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is dgmattributetype)
             return false
@@ -35,6 +39,11 @@ actual data class dgmattributetype(
     actual companion object : KSerializer<dgmattributetype> {
         actual fun getItem(id: Int): dgmattributetype = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<dgmattributetype> = callEndpoint(this::allItems, requestClient)
+
+
+        actual fun getDgmexpressia(item: dgmattributetype): List<dgmexpression> =
+            callEndpoint(this::getDgmexpressia, requestClient, item)
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("dgmattributetype") {
             init {
                 addElement("attributeID")
@@ -127,8 +136,14 @@ actual data class dgmattributetype(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_attributeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_attributeID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_attributeName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -145,8 +160,14 @@ actual data class dgmattributetype(
                             )
                         )
                     ).toString()
-                    3 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    3 -> temp_iconID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     4 -> temp_defaultValue = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -171,8 +192,14 @@ actual data class dgmattributetype(
                             )
                         )
                     ).toString()
-                    7 -> temp_unitID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    7 -> temp_unitID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     8 -> temp_stackable = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -189,8 +216,14 @@ actual data class dgmattributetype(
                             )
                         )
                     ).toBoolean()
-                    10 -> temp_categoryID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    10 -> temp_categoryID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

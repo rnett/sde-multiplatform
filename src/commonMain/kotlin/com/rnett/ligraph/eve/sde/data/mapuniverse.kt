@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = mapuniverse.Companion::class)
 expect class mapuniverse {
     val universeID: Int
     val universeName: String
@@ -26,6 +27,8 @@ expect class mapuniverse {
     companion object : KSerializer<mapuniverse> {
         fun getItem(id: Int): mapuniverse
         fun allItems(): List<mapuniverse>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapuniverse)
@@ -35,4 +38,8 @@ expect class mapuniverse {
         fun serializer(): KSerializer<mapuniverse>
     }
 }
+
+operator fun mapuniverse.Companion.get(id: Int) = getItem(id)
+operator fun mapuniverse.Companion.invoke() = allItems()
+
 

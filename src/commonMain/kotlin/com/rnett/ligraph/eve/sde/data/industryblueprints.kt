@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = industryblueprint.Companion::class)
 expect class industryblueprint {
     val typeID: Int
     val maxProductionLimit: Int
@@ -15,6 +16,8 @@ expect class industryblueprint {
     companion object : KSerializer<industryblueprint> {
         fun getItem(id: Int): industryblueprint
         fun allItems(): List<industryblueprint>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: industryblueprint)
@@ -24,4 +27,8 @@ expect class industryblueprint {
         fun serializer(): KSerializer<industryblueprint>
     }
 }
+
+operator fun industryblueprint.Companion.get(id: Int) = getItem(id)
+operator fun industryblueprint.Companion.invoke() = allItems()
+
 

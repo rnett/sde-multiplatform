@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invtype.Companion::class)
 actual data class invtype(
 	actual val typeID: Int,
 	actual val groupID: Int,
@@ -25,6 +26,12 @@ actual data class invtype(
 	actual val soundID: Int,
 	actual val graphicID: Int
 ) {
+	actual val group: invgroup get() = getGroup(this)
+	actual val marketGroup: invmarketgroup get() = getMarketGroup(this)
+	actual val dgmexpressia: List<dgmexpression> get() = getDgmexpressia(this)
+	actual val invtraits_rk: List<invtrait> get() = getInvtraits_rk(this)
+
+
 	actual override fun equals(other: Any?): Boolean {
 		if (other == null || other !is invtype)
 			return false
@@ -41,6 +48,17 @@ actual data class invtype(
 	actual companion object : KSerializer<invtype> {
 		actual fun getItem(id: Int): invtype = callEndpoint(this::getItem, requestClient, id)
 		actual fun allItems(): List<invtype> = callEndpoint(this::allItems, requestClient)
+
+		actual fun getGroup(item: invtype): invgroup = callEndpoint(this::getGroup, requestClient, item)
+		actual fun getMarketGroup(item: invtype): invmarketgroup =
+			callEndpoint(this::getMarketGroup, requestClient, item)
+
+		actual fun getDgmexpressia(item: invtype): List<dgmexpression> =
+			callEndpoint(this::getDgmexpressia, requestClient, item)
+
+		actual fun getInvtraits_rk(item: invtype): List<invtrait> =
+			callEndpoint(this::getInvtraits_rk, requestClient, item)
+
 		actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invtype") {
 			init {
 				addElement("typeID")
@@ -161,10 +179,22 @@ actual data class invtype(
 			loop@ while (true) {
 				when (val i = inp.decodeElementIndex(descriptor)) {
 					CompositeDecoder.READ_DONE -> break@loop
-					0 -> temp_typeID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-					1 -> temp_groupID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					0 -> temp_typeID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					1 -> temp_groupID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
 					2 -> temp_typeName = stringFromUtf8Bytes(
 						HexConverter.parseHexBinary(
 							inp.decodeStringElement(
@@ -205,10 +235,22 @@ actual data class invtype(
 							)
 						)
 					).toDouble()
-					7 -> temp_portionSize =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-					8 -> temp_raceID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					7 -> temp_portionSize = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					8 -> temp_raceID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
 					9 -> temp_basePrice = stringFromUtf8Bytes(
 						HexConverter.parseHexBinary(
 							inp.decodeStringElement(
@@ -225,14 +267,38 @@ actual data class invtype(
 							)
 						)
 					).toBoolean()
-					11 -> temp_marketGroupID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-					12 -> temp_iconID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-					13 -> temp_soundID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-					14 -> temp_graphicID =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					11 -> temp_marketGroupID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					12 -> temp_iconID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					13 -> temp_soundID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
+					14 -> temp_graphicID = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
 					else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
 				}
 			}

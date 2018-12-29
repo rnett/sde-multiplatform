@@ -49,13 +49,15 @@ object mapsolarsystems : IntIdTable("mapsolarsystems", "solarSystemID") {
 }
 
 
-
+@Serializable(with = mapsolarsystem.Companion::class)
 actual class mapsolarsystem(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(mapsolarsystem::class)
     actual companion object : IntEntityClass<mapsolarsystem>(mapsolarsystems), KSerializer<mapsolarsystem> {
         actual fun getItem(id: Int) = transaction { super.get(id) }
         actual fun allItems() = transaction { super.all().toList() }
+        actual fun getConstellation_fk(item: mapsolarsystem): mapconstellation = transaction { item.constellation_fk }
+        actual fun getRegion(item: mapsolarsystem): mapregion = transaction { item.region }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("mapsolarsystem") {
             init {
                 addElement("regionID")
@@ -228,8 +230,14 @@ actual class mapsolarsystem(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    2 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> id = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }
@@ -276,8 +284,8 @@ actual class mapsolarsystem(val myId: EntityID<Int>) : IntEntity(myId) {
 
     // Foreign/Imported Keys (One to Many)
 
-    val constellation_fk: mapconstellation by mapconstellation referencedOn mapsolarsystems.constellation_fk
-    val region: mapregion by mapregion referencedOn mapsolarsystems.region
+    actual val constellation_fk: mapconstellation by mapconstellation referencedOn mapsolarsystems.constellation_fk
+    actual val region: mapregion by mapregion referencedOn mapsolarsystems.region
 
 
     // Helper Methods

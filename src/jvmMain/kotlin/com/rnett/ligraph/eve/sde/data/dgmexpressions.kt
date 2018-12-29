@@ -34,13 +34,18 @@ object dgmexpressions : IntIdTable("dgmexpressions", "expressionID") {
 }
 
 
-
+@Serializable(with = dgmexpression.Companion::class)
 actual class dgmexpression(val myId: EntityID<Int>) : IntEntity(myId) {
 
     @Serializer(dgmexpression::class)
     actual companion object : IntEntityClass<dgmexpression>(dgmexpressions), KSerializer<dgmexpression> {
         actual fun getItem(id: Int) = transaction { super.get(id) }
         actual fun allItems() = transaction { super.all().toList() }
+        actual fun getExpressionAttribute(item: dgmexpression): dgmattributetype =
+            transaction { item.expressionAttribute }
+
+        actual fun getExpressionGroup(item: dgmexpression): invgroup = transaction { item.expressionGroup }
+        actual fun getExpressionType(item: dgmexpression): invtype = transaction { item.expressionType }
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("dgmexpression") {
             init {
                 addElement("expressionID")
@@ -117,8 +122,14 @@ actual class dgmexpression(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> id = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }
@@ -149,9 +160,9 @@ actual class dgmexpression(val myId: EntityID<Int>) : IntEntity(myId) {
 
     // Foreign/Imported Keys (One to Many)
 
-    val expressionAttribute: dgmattributetype by dgmattributetype referencedOn dgmexpressions.expressionAttribute
-    val expressionGroup: invgroup by invgroup referencedOn dgmexpressions.expressionGroup
-    val expressionType: invtype by invtype referencedOn dgmexpressions.expressionType
+    actual val expressionAttribute: dgmattributetype by dgmattributetype referencedOn dgmexpressions.expressionAttribute
+    actual val expressionGroup: invgroup by invgroup referencedOn dgmexpressions.expressionGroup
+    actual val expressionType: invtype by invtype referencedOn dgmexpressions.expressionType
 
 
     // Helper Methods

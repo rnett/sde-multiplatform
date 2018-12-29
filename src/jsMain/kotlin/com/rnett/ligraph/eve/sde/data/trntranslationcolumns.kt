@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = trntranslationcolumn.Companion::class)
 actual data class trntranslationcolumn(
     actual val tcGroupID: Int,
     actual val tcID: Int,
@@ -15,6 +16,8 @@ actual data class trntranslationcolumn(
     actual val columnName: String,
     actual val masterID: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is trntranslationcolumn)
             return false
@@ -29,6 +32,8 @@ actual data class trntranslationcolumn(
     actual companion object : KSerializer<trntranslationcolumn> {
         actual fun getItem(id: Int): trntranslationcolumn = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<trntranslationcolumn> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("trntranslationcolumn") {
             init {
                 addElement("tcGroupID")
@@ -79,10 +84,22 @@ actual data class trntranslationcolumn(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_tcGroupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_tcID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_tcGroupID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
+                    1 -> temp_tcID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     2 -> temp_tableName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

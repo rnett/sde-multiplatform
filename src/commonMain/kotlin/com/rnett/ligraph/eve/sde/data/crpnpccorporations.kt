@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = crpnpccorporation.Companion::class)
 expect class crpnpccorporation {
     val corporationID: Int
     val size: Char
@@ -41,6 +42,8 @@ expect class crpnpccorporation {
     companion object : KSerializer<crpnpccorporation> {
         fun getItem(id: Int): crpnpccorporation
         fun allItems(): List<crpnpccorporation>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: crpnpccorporation)
@@ -50,4 +53,8 @@ expect class crpnpccorporation {
         fun serializer(): KSerializer<crpnpccorporation>
     }
 }
+
+operator fun crpnpccorporation.Companion.get(id: Int) = getItem(id)
+operator fun crpnpccorporation.Companion.invoke() = allItems()
+
 

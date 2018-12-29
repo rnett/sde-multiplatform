@@ -22,7 +22,7 @@ object trntranslationcolumns : IntIdTable("trntranslationcolumns", "tcID") {
 }
 
 
-
+@Serializable(with = trntranslationcolumn.Companion::class)
 actual class trntranslationcolumn(val myId: EntityID<Int>) : IntEntity(myId) {
 
 	@Serializer(trntranslationcolumn::class)
@@ -76,8 +76,14 @@ actual class trntranslationcolumn(val myId: EntityID<Int>) : IntEntity(myId) {
 			loop@ while (true) {
 				when (val i = inp.decodeElementIndex(descriptor)) {
 					CompositeDecoder.READ_DONE -> break@loop
-					1 -> id =
-						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					1 -> id = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toInt()
 					else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
 				}
 			}
@@ -110,7 +116,7 @@ actual class trntranslationcolumn(val myId: EntityID<Int>) : IntEntity(myId) {
 	}
 
 
-	actual override fun hashCode() = tcID 
+	actual override fun hashCode() = tcID
 
 
 }

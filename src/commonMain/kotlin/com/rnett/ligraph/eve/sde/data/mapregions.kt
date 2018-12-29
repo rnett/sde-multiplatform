@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = mapregion.Companion::class)
 expect class mapregion {
     val regionID: Int
     val regionName: String
@@ -19,6 +20,8 @@ expect class mapregion {
     val factionID: Int
     val radius: Double
 
+    val mapconstellatia: List<mapconstellation>
+    val mapsolarsystems_rk: List<mapsolarsystem>
     override fun equals(other: Any?): Boolean
     override fun hashCode(): Int
     override fun toString(): String
@@ -27,6 +30,11 @@ expect class mapregion {
     companion object : KSerializer<mapregion> {
         fun getItem(id: Int): mapregion
         fun allItems(): List<mapregion>
+
+
+        fun getMapconstellatia(item: mapregion): List<mapconstellation>
+        fun getMapsolarsystems_rk(item: mapregion): List<mapsolarsystem>
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapregion)
@@ -36,4 +44,8 @@ expect class mapregion {
         fun serializer(): KSerializer<mapregion>
     }
 }
+
+operator fun mapregion.Companion.get(id: Int) = getItem(id)
+operator fun mapregion.Companion.invoke() = allItems()
+
 

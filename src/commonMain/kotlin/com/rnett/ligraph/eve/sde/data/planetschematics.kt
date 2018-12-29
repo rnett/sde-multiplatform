@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = planetschematic.Companion::class)
 expect class planetschematic {
     val schematicID: Int
     val schematicName: String
@@ -17,6 +18,8 @@ expect class planetschematic {
     companion object : KSerializer<planetschematic> {
         fun getItem(id: Int): planetschematic
         fun allItems(): List<planetschematic>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: planetschematic)
@@ -26,4 +29,8 @@ expect class planetschematic {
         fun serializer(): KSerializer<planetschematic>
     }
 }
+
+operator fun planetschematic.Companion.get(id: Int) = getItem(id)
+operator fun planetschematic.Companion.invoke() = allItems()
+
 

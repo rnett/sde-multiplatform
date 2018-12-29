@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = skin.Companion::class)
 expect class skin {
     val skinID: Int
     val internalName: String
@@ -17,6 +18,8 @@ expect class skin {
     companion object : KSerializer<skin> {
         fun getItem(id: Int): skin
         fun allItems(): List<skin>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: skin)
@@ -26,4 +29,8 @@ expect class skin {
         fun serializer(): KSerializer<skin>
     }
 }
+
+operator fun skin.Companion.get(id: Int) = getItem(id)
+operator fun skin.Companion.invoke() = allItems()
+
 

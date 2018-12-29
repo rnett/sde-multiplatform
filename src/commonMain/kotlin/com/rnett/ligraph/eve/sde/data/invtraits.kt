@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = invtrait.Companion::class)
 expect class invtrait {
     val traitID: Int
     val typeID: Int
@@ -12,6 +13,7 @@ expect class invtrait {
     val bonusText: String
     val unitID: Int
 
+    val type: invtype
     override fun equals(other: Any?): Boolean
     override fun hashCode(): Int
 
@@ -19,6 +21,10 @@ expect class invtrait {
     companion object : KSerializer<invtrait> {
         fun getItem(id: Int): invtrait
         fun allItems(): List<invtrait>
+
+        fun getType(item: invtrait): invtype
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: invtrait)
@@ -28,4 +34,8 @@ expect class invtrait {
         fun serializer(): KSerializer<invtrait>
     }
 }
+
+operator fun invtrait.Companion.get(id: Int) = getItem(id)
+operator fun invtrait.Companion.invoke() = allItems()
+
 

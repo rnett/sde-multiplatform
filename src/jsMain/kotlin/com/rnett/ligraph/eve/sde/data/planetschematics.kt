@@ -8,11 +8,14 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = planetschematic.Companion::class)
 actual data class planetschematic(
     actual val schematicID: Int,
     actual val schematicName: String,
     actual val cycleTime: Int
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is planetschematic)
             return false
@@ -29,6 +32,8 @@ actual data class planetschematic(
     actual companion object : KSerializer<planetschematic> {
         actual fun getItem(id: Int): planetschematic = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<planetschematic> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("planetschematic") {
             init {
                 addElement("schematicID")
@@ -65,8 +70,14 @@ actual data class planetschematic(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_schematicID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_schematicID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_schematicName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -75,8 +86,14 @@ actual data class planetschematic(
                             )
                         )
                     ).toString()
-                    2 -> temp_cycleTime =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_cycleTime = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

@@ -8,10 +8,13 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = invname.Companion::class)
 actual data class invname(
     actual val itemID: Int,
     actual val itemName: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is invname)
             return false
@@ -28,6 +31,8 @@ actual data class invname(
     actual companion object : KSerializer<invname> {
         actual fun getItem(id: Int): invname = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<invname> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invname") {
             init {
                 addElement("itemID")
@@ -57,8 +62,14 @@ actual data class invname(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_itemID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_itemID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_itemName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

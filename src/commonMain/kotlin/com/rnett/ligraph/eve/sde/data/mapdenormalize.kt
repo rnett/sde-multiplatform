@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = mapdenormalize.Companion::class)
 expect class mapdenormalize {
     val itemID: Int
     val typeID: Int
@@ -29,6 +30,8 @@ expect class mapdenormalize {
     companion object : KSerializer<mapdenormalize> {
         fun getItem(id: Int): mapdenormalize
         fun allItems(): List<mapdenormalize>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapdenormalize)
@@ -38,4 +41,8 @@ expect class mapdenormalize {
         fun serializer(): KSerializer<mapdenormalize>
     }
 }
+
+operator fun mapdenormalize.Companion.get(id: Int) = getItem(id)
+operator fun mapdenormalize.Companion.invoke() = allItems()
+
 

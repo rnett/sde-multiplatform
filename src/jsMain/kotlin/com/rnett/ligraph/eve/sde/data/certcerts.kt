@@ -8,12 +8,15 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = certcert.Companion::class)
 actual data class certcert(
     actual val certID: Int,
     actual val description: String,
     actual val groupID: Int,
     actual val name: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is certcert)
             return false
@@ -30,6 +33,8 @@ actual data class certcert(
     actual companion object : KSerializer<certcert> {
         actual fun getItem(id: Int): certcert = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<certcert> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("certcert") {
             init {
                 addElement("certID")
@@ -73,8 +78,14 @@ actual data class certcert(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_certID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_certID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_description = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -83,8 +94,14 @@ actual data class certcert(
                             )
                         )
                     ).toString()
-                    2 -> temp_groupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    2 -> temp_groupID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     3 -> temp_name = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

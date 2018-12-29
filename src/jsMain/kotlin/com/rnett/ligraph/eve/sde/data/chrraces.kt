@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.internal.HexConverter
 import kotlinx.serialization.internal.SerialClassDescImpl
 
+@Serializable(with = chrrace.Companion::class)
 actual data class chrrace(
     actual val raceID: Int,
     actual val raceName: String,
@@ -15,6 +16,8 @@ actual data class chrrace(
     actual val iconID: Int,
     actual val shortDescription: String
 ) {
+
+
     actual override fun equals(other: Any?): Boolean {
         if (other == null || other !is chrrace)
             return false
@@ -31,6 +34,8 @@ actual data class chrrace(
     actual companion object : KSerializer<chrrace> {
         actual fun getItem(id: Int): chrrace = callEndpoint(this::getItem, requestClient, id)
         actual fun allItems(): List<chrrace> = callEndpoint(this::allItems, requestClient)
+
+
         actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("chrrace") {
             init {
                 addElement("raceID")
@@ -81,8 +86,14 @@ actual data class chrrace(
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_raceID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    0 -> temp_raceID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     1 -> temp_raceName = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(
@@ -99,8 +110,14 @@ actual data class chrrace(
                             )
                         )
                     ).toString()
-                    3 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+                    3 -> temp_iconID = stringFromUtf8Bytes(
+                        HexConverter.parseHexBinary(
+                            inp.decodeStringElement(
+                                descriptor,
+                                i
+                            )
+                        )
+                    ).toInt()
                     4 -> temp_shortDescription = stringFromUtf8Bytes(
                         HexConverter.parseHexBinary(
                             inp.decodeStringElement(

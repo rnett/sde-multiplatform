@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = ramactivity.Companion::class)
 expect class ramactivity {
     val activityID: Int
     val activityName: String
@@ -19,6 +20,8 @@ expect class ramactivity {
     companion object : KSerializer<ramactivity> {
         fun getItem(id: Int): ramactivity
         fun allItems(): List<ramactivity>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: ramactivity)
@@ -28,4 +31,8 @@ expect class ramactivity {
         fun serializer(): KSerializer<ramactivity>
     }
 }
+
+operator fun ramactivity.Companion.get(id: Int) = getItem(id)
+operator fun ramactivity.Companion.invoke() = allItems()
+
 

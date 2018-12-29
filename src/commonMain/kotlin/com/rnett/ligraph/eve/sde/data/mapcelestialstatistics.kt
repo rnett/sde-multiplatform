@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = mapcelestialstatistic.Companion::class)
 expect class mapcelestialstatistic {
     val celestialID: Int
     val temperature: Double
@@ -33,6 +34,8 @@ expect class mapcelestialstatistic {
     companion object : KSerializer<mapcelestialstatistic> {
         fun getItem(id: Int): mapcelestialstatistic
         fun allItems(): List<mapcelestialstatistic>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: mapcelestialstatistic)
@@ -42,4 +45,8 @@ expect class mapcelestialstatistic {
         fun serializer(): KSerializer<mapcelestialstatistic>
     }
 }
+
+operator fun mapcelestialstatistic.Companion.get(id: Int) = getItem(id)
+operator fun mapcelestialstatistic.Companion.invoke() = allItems()
+
 

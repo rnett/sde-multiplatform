@@ -4,6 +4,7 @@ package com.rnett.ligraph.eve.sde.data
 
 import kotlinx.serialization.*
 
+@Serializable(with = dgmeffect.Companion::class)
 expect class dgmeffect {
     val effectID: Int
     val effectName: String
@@ -41,6 +42,8 @@ expect class dgmeffect {
     companion object : KSerializer<dgmeffect> {
         fun getItem(id: Int): dgmeffect
         fun allItems(): List<dgmeffect>
+
+
         override val descriptor: SerialDescriptor
 
         override fun serialize(output: Encoder, obj: dgmeffect)
@@ -50,4 +53,8 @@ expect class dgmeffect {
         fun serializer(): KSerializer<dgmeffect>
     }
 }
+
+operator fun dgmeffect.Companion.get(id: Int) = getItem(id)
+operator fun dgmeffect.Companion.invoke() = allItems()
+
 
