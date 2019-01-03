@@ -29,7 +29,6 @@ expect class eveunit {
         fun serializer(): KSerializer<eveunit>
     }
 }
-
 operator fun eveunit.Companion.get(id: Int) = getItem(id)
 operator fun eveunit.Companion.invoke() = allItems()
 

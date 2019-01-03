@@ -40,7 +40,6 @@ expect class staoperation {
         fun serializer(): KSerializer<staoperation>
     }
 }
-
 operator fun staoperation.Companion.get(id: Int) = getItem(id)
 operator fun staoperation.Companion.invoke() = allItems()
 

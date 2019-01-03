@@ -28,7 +28,6 @@ expect class invmetatype {
         fun serializer(): KSerializer<invmetatype>
     }
 }
-
 operator fun invmetatype.Companion.get(id: Int) = getItem(id)
 operator fun invmetatype.Companion.invoke() = allItems()
 

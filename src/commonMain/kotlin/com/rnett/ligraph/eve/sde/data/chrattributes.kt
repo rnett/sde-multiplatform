@@ -32,7 +32,6 @@ expect class chrattribute {
         fun serializer(): KSerializer<chrattribute>
     }
 }
-
 operator fun chrattribute.Companion.get(id: Int) = getItem(id)
 operator fun chrattribute.Companion.invoke() = allItems()
 

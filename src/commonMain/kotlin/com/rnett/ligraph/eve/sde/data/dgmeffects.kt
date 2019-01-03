@@ -53,7 +53,6 @@ expect class dgmeffect {
         fun serializer(): KSerializer<dgmeffect>
     }
 }
-
 operator fun dgmeffect.Companion.get(id: Int) = getItem(id)
 operator fun dgmeffect.Companion.invoke() = allItems()
 

@@ -37,7 +37,6 @@ expect class chrancestry {
         fun serializer(): KSerializer<chrancestry>
     }
 }
-
 operator fun chrancestry.Companion.get(id: Int) = getItem(id)
 operator fun chrancestry.Companion.invoke() = allItems()
 

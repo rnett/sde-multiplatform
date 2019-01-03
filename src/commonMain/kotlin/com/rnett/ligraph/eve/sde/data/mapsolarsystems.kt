@@ -57,7 +57,6 @@ expect class mapsolarsystem {
         fun serializer(): KSerializer<mapsolarsystem>
     }
 }
-
 operator fun mapsolarsystem.Companion.get(id: Int) = getItem(id)
 operator fun mapsolarsystem.Companion.invoke() = allItems()
 

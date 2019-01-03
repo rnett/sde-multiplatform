@@ -44,7 +44,6 @@ expect class mapregion {
         fun serializer(): KSerializer<mapregion>
     }
 }
-
 operator fun mapregion.Companion.get(id: Int) = getItem(id)
 operator fun mapregion.Companion.invoke() = allItems()
 

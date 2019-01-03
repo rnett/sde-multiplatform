@@ -27,7 +27,6 @@ expect class maplocationscene {
         fun serializer(): KSerializer<maplocationscene>
     }
 }
-
 operator fun maplocationscene.Companion.get(id: Int) = getItem(id)
 operator fun maplocationscene.Companion.invoke() = allItems()
 

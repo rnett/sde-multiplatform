@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object stastations : LongIdTable("stastations", "stationID") {
     // Database Columns
 
-    val stationID = long("stationID").primaryKey()
+    val stationID = long("stationID")//.primaryKey()
     val security = double("security")
     val dockingCostPerVolume = double("dockingCostPerVolume")
     val maxShipVolumeDockable = double("maxShipVolumeDockable")

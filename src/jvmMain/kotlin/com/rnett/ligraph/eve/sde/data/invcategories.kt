@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object invcategories : IntIdTable("invcategories", "categoryID") {
 	// Database Columns
 
-	val categoryID = integer("categoryID").primaryKey()
+    val categoryID = integer("categoryID")//.primaryKey()
 	val categoryName = varchar("categoryName", 100)
 	val iconID = integer("iconID")
 	val published = bool("published")
@@ -31,12 +31,12 @@ object invcategories : IntIdTable("invcategories", "categoryID") {
 actual class invcategory(val myId: EntityID<Int>) : IntEntity(myId) {
 
 	@Serializer(invcategory::class)
-	actual companion object : IntEntityClass<invcategory>(invcategories), KSerializer<invcategory> {
-		actual fun getItem(id: Int) = transaction { super.get(id) }
-		actual fun allItems() = transaction { super.all().toList() }
-		actual fun getInvgroups_rk(item: invcategory): List<invgroup> = transaction { item.invgroups_rk }
+    actual companion object : IntEntityClass<invcategory>(invcategories), KSerializer<invcategory> {
+        actual fun getItem(id: Int) = transaction { super.get(id) }
+        actual fun allItems() = transaction { super.all().toList() }
+        actual fun getInvgroups_rk(item: invcategory): List<invgroup> = transaction { item.invgroups_rk }
 		actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invcategory") {
-			init {
+            init {
 				addElement("categoryID")
 				addElement("categoryName")
 				addElement("iconID")
@@ -46,26 +46,26 @@ actual class invcategory(val myId: EntityID<Int>) : IntEntity(myId) {
 
 		actual override fun serialize(output: Encoder, obj: invcategory) {
 			val compositeOutput: CompositeEncoder = output.beginStructure(descriptor)
-			compositeOutput.encodeStringElement(
-				descriptor,
-				0,
-				HexConverter.printHexBinary(obj.categoryID.toString().toUtf8Bytes())
-			)
-			compositeOutput.encodeStringElement(
-				descriptor,
-				1,
-				HexConverter.printHexBinary(obj.categoryName.toString().toUtf8Bytes())
-			)
-			compositeOutput.encodeStringElement(
-				descriptor,
-				2,
-				HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
-			)
-			compositeOutput.encodeStringElement(
-				descriptor,
-				3,
-				HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
-			)
+            compositeOutput.encodeStringElement(
+                descriptor,
+                0,
+                HexConverter.printHexBinary(obj.categoryID.toString().toUtf8Bytes())
+            )
+            compositeOutput.encodeStringElement(
+                descriptor,
+                1,
+                HexConverter.printHexBinary(obj.categoryName.toString().toUtf8Bytes())
+            )
+            compositeOutput.encodeStringElement(
+                descriptor,
+                2,
+                HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
+            )
+            compositeOutput.encodeStringElement(
+                descriptor,
+                3,
+                HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
+            )
 			compositeOutput.endStructure(descriptor)
 		}
 
@@ -75,20 +75,14 @@ actual class invcategory(val myId: EntityID<Int>) : IntEntity(myId) {
 			loop@ while (true) {
 				when (val i = inp.decodeElementIndex(descriptor)) {
 					CompositeDecoder.READ_DONE -> break@loop
-					0 -> id = stringFromUtf8Bytes(
-						HexConverter.parseHexBinary(
-							inp.decodeStringElement(
-								descriptor,
-								i
-							)
-						)
-					).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
 					else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
 				}
 			}
 
 			inp.endStructure(descriptor)
-			if (id == null)
+            if (id == null)
 				throw SerializationException("Id 'categoryID' @ index 0 not found")
 			else
 				return invcategory[id]
@@ -111,16 +105,17 @@ actual class invcategory(val myId: EntityID<Int>) : IntEntity(myId) {
 	actual val invgroups_rk: List<invgroup> get() = _invgroups_rk.toList()
 
 
+
 	// Helper Methods
 
 	actual override fun equals(other: Any?): Boolean {
-		if (other == null || other !is invcategory)
+        if (other == null || other !is invcategory)
 			return false
 		return categoryID == other.categoryID
 	}
 
 
-	actual override fun hashCode() = categoryID
+    actual override fun hashCode() = categoryID
 
 
 	actual override fun toString() = categoryName

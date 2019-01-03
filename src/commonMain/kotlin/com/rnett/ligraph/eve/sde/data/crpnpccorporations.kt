@@ -53,7 +53,6 @@ expect class crpnpccorporation {
         fun serializer(): KSerializer<crpnpccorporation>
     }
 }
-
 operator fun crpnpccorporation.Companion.get(id: Int) = getItem(id)
 operator fun crpnpccorporation.Companion.invoke() = allItems()
 

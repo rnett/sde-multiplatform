@@ -27,7 +27,6 @@ expect class invvolume {
         fun serializer(): KSerializer<invvolume>
     }
 }
-
 operator fun invvolume.Companion.get(id: Int) = getItem(id)
 operator fun invvolume.Companion.invoke() = allItems()
 

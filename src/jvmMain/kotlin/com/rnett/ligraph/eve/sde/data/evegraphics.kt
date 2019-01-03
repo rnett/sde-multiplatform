@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object evegraphics : IntIdTable("evegraphics", "graphicID") {
     // Database Columns
 
-    val graphicID = integer("graphicID").primaryKey()
+    val graphicID = integer("graphicID")//.primaryKey()
     val sofFactionName = varchar("sofFactionName", 100)
     val graphicFile = varchar("graphicFile", 100)
     val sofHullName = varchar("sofHullName", 100)
@@ -82,14 +82,8 @@ actual class evegraphic(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

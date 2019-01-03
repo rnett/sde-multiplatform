@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object invmetagroups : IntIdTable("invmetagroups", "metaGroupID") {
     // Database Columns
 
-    val metaGroupID = integer("metaGroupID").primaryKey()
+    val metaGroupID = integer("metaGroupID")//.primaryKey()
     val metaGroupName = varchar("metaGroupName", 100)
     val description = varchar("description", 1000)
     val iconID = integer("iconID")
@@ -68,14 +68,8 @@ actual class invmetagroup(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

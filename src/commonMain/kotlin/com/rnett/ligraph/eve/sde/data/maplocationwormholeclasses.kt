@@ -27,7 +27,6 @@ expect class maplocationwormholeclass {
         fun serializer(): KSerializer<maplocationwormholeclass>
     }
 }
-
 operator fun maplocationwormholeclass.Companion.get(id: Int) = getItem(id)
 operator fun maplocationwormholeclass.Companion.invoke() = allItems()
 

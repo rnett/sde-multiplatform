@@ -8,8 +8,8 @@ object invcontroltowerresources :
     IntIdTable("invcontroltowerresources", "controlTowerTypeID\" << 8 | \"resourceTypeID") {
     // Database Columns
 
-    val controlTowerTypeID = integer("controlTowerTypeID").primaryKey(1)
-    val resourceTypeID = integer("resourceTypeID").primaryKey(2)
+    val controlTowerTypeID = integer("controlTowerTypeID")//.primaryKey(1)
+    val resourceTypeID = integer("resourceTypeID")//.primaryKey(2)
     val purpose = integer("purpose")
     val quantity = integer("quantity")
     val minSecurityLevel = double("minSecurityLevel")

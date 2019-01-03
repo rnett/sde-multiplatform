@@ -36,7 +36,6 @@ expect class stastationtype {
         fun serializer(): KSerializer<stastationtype>
     }
 }
-
 operator fun stastationtype.Companion.get(id: Int) = getItem(id)
 operator fun stastationtype.Companion.invoke() = allItems()
 

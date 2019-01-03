@@ -35,7 +35,6 @@ expect class ramassemblylinetype {
         fun serializer(): KSerializer<ramassemblylinetype>
     }
 }
-
 operator fun ramassemblylinetype.Companion.get(id: Int) = getItem(id)
 operator fun ramassemblylinetype.Companion.invoke() = allItems()
 

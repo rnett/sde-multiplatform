@@ -27,7 +27,6 @@ expect class invcontroltowerresourcepurpose {
         fun serializer(): KSerializer<invcontroltowerresourcepurpose>
     }
 }
-
 operator fun invcontroltowerresourcepurpose.Companion.get(id: Int) = getItem(id)
 operator fun invcontroltowerresourcepurpose.Companion.invoke() = allItems()
 

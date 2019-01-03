@@ -41,7 +41,6 @@ expect class mapdenormalize {
         fun serializer(): KSerializer<mapdenormalize>
     }
 }
-
 operator fun mapdenormalize.Companion.get(id: Int) = getItem(id)
 operator fun mapdenormalize.Companion.invoke() = allItems()
 

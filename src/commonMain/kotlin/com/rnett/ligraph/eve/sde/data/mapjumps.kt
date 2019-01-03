@@ -27,7 +27,6 @@ expect class mapjump {
         fun serializer(): KSerializer<mapjump>
     }
 }
-
 operator fun mapjump.Companion.get(id: Int) = getItem(id)
 operator fun mapjump.Companion.invoke() = allItems()
 

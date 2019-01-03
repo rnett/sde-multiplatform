@@ -37,7 +37,6 @@ expect class chrfaction {
         fun serializer(): KSerializer<chrfaction>
     }
 }
-
 operator fun chrfaction.Companion.get(id: Int) = getItem(id)
 operator fun chrfaction.Companion.invoke() = allItems()
 

@@ -31,7 +31,6 @@ expect class ramactivity {
         fun serializer(): KSerializer<ramactivity>
     }
 }
-
 operator fun ramactivity.Companion.get(id: Int) = getItem(id)
 operator fun ramactivity.Companion.invoke() = allItems()
 

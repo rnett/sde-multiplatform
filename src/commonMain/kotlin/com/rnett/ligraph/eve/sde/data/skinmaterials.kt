@@ -28,7 +28,6 @@ expect class skinmaterial {
         fun serializer(): KSerializer<skinmaterial>
     }
 }
-
 operator fun skinmaterial.Companion.get(id: Int) = getItem(id)
 operator fun skinmaterial.Companion.invoke() = allItems()
 

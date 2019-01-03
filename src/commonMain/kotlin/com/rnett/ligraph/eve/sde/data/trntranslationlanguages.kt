@@ -29,7 +29,6 @@ expect class trntranslationlanguage {
         fun serializer(): KSerializer<trntranslationlanguage>
     }
 }
-
 operator fun trntranslationlanguage.Companion.get(id: Int) = getItem(id)
 operator fun trntranslationlanguage.Companion.invoke() = allItems()
 

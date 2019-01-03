@@ -31,7 +31,6 @@ expect class chrrace {
         fun serializer(): KSerializer<chrrace>
     }
 }
-
 operator fun chrrace.Companion.get(id: Int) = getItem(id)
 operator fun chrrace.Companion.invoke() = allItems()
 

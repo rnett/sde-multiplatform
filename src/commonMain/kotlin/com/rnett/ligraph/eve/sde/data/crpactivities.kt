@@ -29,7 +29,6 @@ expect class crpactivity {
 		fun serializer(): KSerializer<crpactivity>
 	}
 }
-
 operator fun crpactivity.Companion.get(id: Int) = getItem(id)
 operator fun crpactivity.Companion.invoke() = allItems()
 

@@ -30,7 +30,6 @@ expect class certcert {
         fun serializer(): KSerializer<certcert>
     }
 }
-
 operator fun certcert.Companion.get(id: Int) = getItem(id)
 operator fun certcert.Companion.invoke() = allItems()
 

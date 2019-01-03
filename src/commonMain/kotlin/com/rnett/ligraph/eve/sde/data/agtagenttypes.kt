@@ -27,7 +27,6 @@ expect class agtagenttype {
         fun serializer(): KSerializer<agtagenttype>
     }
 }
-
 operator fun agtagenttype.Companion.get(id: Int) = getItem(id)
 operator fun agtagenttype.Companion.invoke() = allItems()
 

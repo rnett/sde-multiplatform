@@ -15,7 +15,7 @@ object staoperations : IntIdTable("staoperations", "operationID") {
     // Database Columns
 
     val activityID = integer("activityID")
-    val operationID = integer("operationID").primaryKey()
+    val operationID = integer("operationID")//.primaryKey()
     val operationName = varchar("operationName", 100)
     val description = varchar("description", 1000)
     val fringe = integer("fringe")
@@ -138,14 +138,8 @@ actual class staoperation(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    1 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    1 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

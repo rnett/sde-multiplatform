@@ -8,8 +8,8 @@ object mapconstellationjumps : IntIdTable("mapconstellationjumps", "fromConstell
     // Database Columns
 
     val fromRegionID = integer("fromRegionID")
-    val fromConstellationID = integer("fromConstellationID").primaryKey(1)
-    val toConstellationID = integer("toConstellationID").primaryKey(2)
+    val fromConstellationID = integer("fromConstellationID")//.primaryKey(1)
+    val toConstellationID = integer("toConstellationID")//.primaryKey(2)
     val toRegionID = integer("toRegionID")
 }
 

@@ -29,7 +29,6 @@ expect class dgmattributecategory {
         fun serializer(): KSerializer<dgmattributecategory>
     }
 }
-
 operator fun dgmattributecategory.Companion.get(id: Int) = getItem(id)
 operator fun dgmattributecategory.Companion.invoke() = allItems()
 

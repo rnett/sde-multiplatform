@@ -45,7 +45,6 @@ expect class mapcelestialstatistic {
         fun serializer(): KSerializer<mapcelestialstatistic>
     }
 }
-
 operator fun mapcelestialstatistic.Companion.get(id: Int) = getItem(id)
 operator fun mapcelestialstatistic.Companion.invoke() = allItems()
 

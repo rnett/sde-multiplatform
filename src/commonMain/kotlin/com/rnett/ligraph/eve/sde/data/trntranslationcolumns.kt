@@ -30,7 +30,6 @@ expect class trntranslationcolumn {
         fun serializer(): KSerializer<trntranslationcolumn>
     }
 }
-
 operator fun trntranslationcolumn.Companion.get(id: Int) = getItem(id)
 operator fun trntranslationcolumn.Companion.invoke() = allItems()
 

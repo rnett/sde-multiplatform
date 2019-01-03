@@ -29,7 +29,6 @@ expect class invuniquename {
         fun serializer(): KSerializer<invuniquename>
     }
 }
-
 operator fun invuniquename.Companion.get(id: Int) = getItem(id)
 operator fun invuniquename.Companion.invoke() = allItems()
 

@@ -43,7 +43,6 @@ expect class chrbloodline {
         fun serializer(): KSerializer<chrbloodline>
     }
 }
-
 operator fun chrbloodline.Companion.get(id: Int) = getItem(id)
 operator fun chrbloodline.Companion.invoke() = allItems()
 

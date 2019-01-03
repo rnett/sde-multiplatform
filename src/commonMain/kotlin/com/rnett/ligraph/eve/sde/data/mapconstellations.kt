@@ -45,7 +45,6 @@ expect class mapconstellation {
         fun serializer(): KSerializer<mapconstellation>
     }
 }
-
 operator fun mapconstellation.Companion.get(id: Int) = getItem(id)
 operator fun mapconstellation.Companion.invoke() = allItems()
 

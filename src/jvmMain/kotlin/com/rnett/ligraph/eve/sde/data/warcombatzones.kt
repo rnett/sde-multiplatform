@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object warcombatzones : IntIdTable("warcombatzones", "combatZoneID") {
     // Database Columns
 
-    val combatZoneID = integer("combatZoneID").primaryKey()
+    val combatZoneID = integer("combatZoneID")//.primaryKey()
     val combatZoneName = varchar("combatZoneName", 100)
     val factionID = integer("factionID")
     val centerSystemID = integer("centerSystemID")
@@ -75,14 +75,8 @@ actual class warcombatzone(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

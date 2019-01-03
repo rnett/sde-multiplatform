@@ -9,8 +9,8 @@ object mapsolarsystemjumps : IntIdTable("mapsolarsystemjumps", "fromSolarSystemI
 
     val fromRegionID = integer("fromRegionID")
     val fromConstellationID = integer("fromConstellationID")
-    val fromSolarSystemID = integer("fromSolarSystemID").primaryKey(1)
-    val toSolarSystemID = integer("toSolarSystemID").primaryKey(2)
+    val fromSolarSystemID = integer("fromSolarSystemID")//.primaryKey(1)
+    val toSolarSystemID = integer("toSolarSystemID")//.primaryKey(2)
     val toConstellationID = integer("toConstellationID")
     val toRegionID = integer("toRegionID")
 }

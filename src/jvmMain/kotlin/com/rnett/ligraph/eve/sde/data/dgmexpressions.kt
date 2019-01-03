@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object dgmexpressions : IntIdTable("dgmexpressions", "expressionID") {
     // Database Columns
 
-    val expressionID = integer("expressionID").primaryKey()
+    val expressionID = integer("expressionID")//.primaryKey()
     val operandID = integer("operandID")
     val arg1 = integer("arg1")
     val arg2 = integer("arg2")
@@ -122,14 +122,8 @@ actual class dgmexpression(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

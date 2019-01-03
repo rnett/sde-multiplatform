@@ -34,7 +34,6 @@ expect class maplandmark {
         fun serializer(): KSerializer<maplandmark>
     }
 }
-
 operator fun maplandmark.Companion.get(id: Int) = getItem(id)
 operator fun maplandmark.Companion.invoke() = allItems()
 

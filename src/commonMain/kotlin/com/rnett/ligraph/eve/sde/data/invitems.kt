@@ -31,7 +31,6 @@ expect class invitem {
         fun serializer(): KSerializer<invitem>
     }
 }
-
 operator fun invitem.Companion.get(id: Int) = getItem(id)
 operator fun invitem.Companion.invoke() = allItems()
 

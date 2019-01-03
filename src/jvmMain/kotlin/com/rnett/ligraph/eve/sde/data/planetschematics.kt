@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object planetschematics : IntIdTable("planetschematics", "schematicID") {
     // Database Columns
 
-    val schematicID = integer("schematicID").primaryKey()
+    val schematicID = integer("schematicID")//.primaryKey()
     val schematicName = varchar("schematicName", 255)
     val cycleTime = integer("cycleTime")
 }
@@ -61,14 +61,8 @@ actual class planetschematic(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

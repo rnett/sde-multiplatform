@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object stastationtypes : IntIdTable("stastationtypes", "stationTypeID") {
     // Database Columns
 
-    val stationTypeID = integer("stationTypeID").primaryKey()
+    val stationTypeID = integer("stationTypeID")//.primaryKey()
     val dockEntryX = double("dockEntryX")
     val dockEntryY = double("dockEntryY")
     val dockEntryZ = double("dockEntryZ")
@@ -117,14 +117,8 @@ actual class stastationtype(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

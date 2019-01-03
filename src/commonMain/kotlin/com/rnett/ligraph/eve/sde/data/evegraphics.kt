@@ -31,7 +31,6 @@ expect class evegraphic {
         fun serializer(): KSerializer<evegraphic>
     }
 }
-
 operator fun evegraphic.Companion.get(id: Int) = getItem(id)
 operator fun evegraphic.Companion.invoke() = allItems()
 

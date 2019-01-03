@@ -43,7 +43,6 @@ expect class dgmexpression {
         fun serializer(): KSerializer<dgmexpression>
     }
 }
-
 operator fun dgmexpression.Companion.get(id: Int) = getItem(id)
 operator fun dgmexpression.Companion.invoke() = allItems()
 

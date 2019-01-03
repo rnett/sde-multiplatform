@@ -29,7 +29,6 @@ expect class invtypereaction {
         fun serializer(): KSerializer<invtypereaction>
     }
 }
-
 operator fun invtypereaction.Companion.get(id: Int) = getItem(id)
 operator fun invtypereaction.Companion.invoke() = allItems()
 

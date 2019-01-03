@@ -31,7 +31,6 @@ expect class warcombatzone {
         fun serializer(): KSerializer<warcombatzone>
     }
 }
-
 operator fun warcombatzone.Companion.get(id: Int) = getItem(id)
 operator fun warcombatzone.Companion.invoke() = allItems()
 

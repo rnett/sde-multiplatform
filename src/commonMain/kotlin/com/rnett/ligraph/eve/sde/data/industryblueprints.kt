@@ -27,7 +27,6 @@ expect class industryblueprint {
         fun serializer(): KSerializer<industryblueprint>
     }
 }
-
 operator fun industryblueprint.Companion.get(id: Int) = getItem(id)
 operator fun industryblueprint.Companion.invoke() = allItems()
 

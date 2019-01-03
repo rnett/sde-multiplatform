@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object crpnpccorporations : IntIdTable("crpnpccorporations", "corporationID") {
     // Database Columns
 
-    val corporationID = integer("corporationID").primaryKey()
+    val corporationID = integer("corporationID")//.primaryKey()
     val size = char("size")
     val extent = char("extent")
     val solarSystemID = integer("solarSystemID")
@@ -236,14 +236,8 @@ actual class crpnpccorporation(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

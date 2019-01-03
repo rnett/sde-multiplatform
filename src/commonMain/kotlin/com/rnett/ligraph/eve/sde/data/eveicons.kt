@@ -28,7 +28,6 @@ expect class eveicon {
         fun serializer(): KSerializer<eveicon>
     }
 }
-
 operator fun eveicon.Companion.get(id: Int) = getItem(id)
 operator fun eveicon.Companion.invoke() = allItems()
 

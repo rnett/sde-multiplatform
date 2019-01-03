@@ -14,9 +14,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object trntranslations : IntIdTable("trntranslations", "tcID") {
     // Database Columns
 
-    val tcID = integer("tcID").primaryKey(1)
-    val keyID = integer("keyID").primaryKey(2)
-    val languageID = varchar("languageID", 50).primaryKey(3)
+    val tcID = integer("tcID")//.primaryKey(1)
+    val keyID = integer("keyID")//.primaryKey(2)
+    val languageID = varchar("languageID", 50)//.primaryKey(3)
     val text = text("text")
 }
 
@@ -68,14 +68,8 @@ actual class trntranslation(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    0 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    0 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }

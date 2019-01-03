@@ -34,7 +34,6 @@ expect class invtrait {
         fun serializer(): KSerializer<invtrait>
     }
 }
-
 operator fun invtrait.Companion.get(id: Int) = getItem(id)
 operator fun invtrait.Companion.invoke() = allItems()
 

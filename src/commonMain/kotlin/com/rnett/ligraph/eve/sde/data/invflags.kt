@@ -30,7 +30,6 @@ expect class invflag {
         fun serializer(): KSerializer<invflag>
     }
 }
-
 operator fun invflag.Companion.get(id: Int) = getItem(id)
 operator fun invflag.Companion.invoke() = allItems()
 

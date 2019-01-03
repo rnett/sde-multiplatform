@@ -30,7 +30,6 @@ expect class invmetagroup {
         fun serializer(): KSerializer<invmetagroup>
     }
 }
-
 operator fun invmetagroup.Companion.get(id: Int) = getItem(id)
 operator fun invmetagroup.Companion.invoke() = allItems()
 

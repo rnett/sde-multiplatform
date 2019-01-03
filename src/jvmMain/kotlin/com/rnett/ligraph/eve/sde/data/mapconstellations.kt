@@ -16,7 +16,7 @@ object mapconstellations : IntIdTable("mapconstellations", "constellationID") {
     // Database Columns
 
     val regionID = integer("regionID")
-    val constellationID = integer("constellationID").primaryKey()
+    val constellationID = integer("constellationID")//.primaryKey()
     val constellationName = varchar("constellationName", 100)
     val x = double("x")
     val y = double("y")
@@ -153,14 +153,8 @@ actual class mapconstellation(val myId: EntityID<Int>) : IntEntity(myId) {
             loop@ while (true) {
                 when (val i = inp.decodeElementIndex(descriptor)) {
                     CompositeDecoder.READ_DONE -> break@loop
-                    1 -> id = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toInt()
+                    1 -> id =
+                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
                     else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
                 }
             }
