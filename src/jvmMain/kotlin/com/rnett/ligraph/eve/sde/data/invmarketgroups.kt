@@ -134,7 +134,7 @@ actual class invmarketgroup(val myId: EntityID<Int>) : IntEntity(myId) {
 	val _invmarketgroups_rk: SizedIterable<invmarketgroup> by invmarketgroup referrersOn invmarketgroups.parentGroup
 	actual val invmarketgroups_rk: List<invmarketgroup> get() = _invmarketgroups_rk.toList()
 
-	val _invtypes_rk: SizedIterable<invtype> by invtype referrersOn invtypes.marketGroup
+    val _invtypes_rk: SizedIterable<invtype> by invtype optionalReferrersOn invtypes.marketGroup
 	actual val invtypes_rk: List<invtype> get() = _invtypes_rk.toList()
 
 

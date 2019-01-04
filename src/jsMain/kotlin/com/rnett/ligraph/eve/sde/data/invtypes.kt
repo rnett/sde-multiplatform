@@ -18,22 +18,22 @@ actual data class invtype(
 	actual val volume: Double,
 	actual val capacity: Double,
 	actual val portionSize: Int,
-	actual val raceID: Int,
-	actual val basePrice: Double,
+	actual val raceID: Int?,
+	actual val basePrice: Double?,
 	actual val published: Boolean,
-	actual val marketGroupID: Int,
-	actual val iconID: Int,
-	actual val soundID: Int,
+	actual val marketGroupID: Int?,
+	actual val iconID: Int?,
+	actual val soundID: Int?,
 	actual val graphicID: Int
 ) {
 	actual val group: invgroup get() = getGroup(this)
-	actual val marketGroup: invmarketgroup get() = getMarketGroup(this)
+	actual val marketGroup: invmarketgroup? get() = getMarketGroup(this)
 	actual val dgmexpressia: List<dgmexpression> get() = getDgmexpressia(this)
 	actual val invtraits_rk: List<invtrait> get() = getInvtraits_rk(this)
 
 
 	actual override fun equals(other: Any?): Boolean {
-        if (other == null || other !is invtype)
+		if (other == null || other !is invtype)
 			return false
 		return typeID == other.typeID
 	}
@@ -50,17 +50,17 @@ actual data class invtype(
 		actual fun allItems(): List<invtype> = callEndpoint(this::allItems, requestClient)
 
 		actual fun getGroup(item: invtype): invgroup = callEndpoint(this::getGroup, requestClient, item)
-        actual fun getMarketGroup(item: invtype): invmarketgroup =
-            callEndpoint(this::getMarketGroup, requestClient, item)
+		actual fun getMarketGroup(item: invtype): invmarketgroup? =
+			callEndpoint(this::getMarketGroup, requestClient, item)
 
-        actual fun getDgmexpressia(item: invtype): List<dgmexpression> =
-            callEndpoint(this::getDgmexpressia, requestClient, item)
+		actual fun getDgmexpressia(item: invtype): List<dgmexpression> =
+			callEndpoint(this::getDgmexpressia, requestClient, item)
 
-        actual fun getInvtraits_rk(item: invtype): List<invtrait> =
-            callEndpoint(this::getInvtraits_rk, requestClient, item)
+		actual fun getInvtraits_rk(item: invtype): List<invtrait> =
+			callEndpoint(this::getInvtraits_rk, requestClient, item)
 
 		actual override val descriptor: SerialDescriptor = object : SerialClassDescImpl("invtype") {
-            init {
+			init {
 				addElement("typeID")
 				addElement("groupID")
 				addElement("typeName")
@@ -81,81 +81,81 @@ actual data class invtype(
 
 		actual override fun serialize(output: Encoder, obj: invtype) {
 			val compositeOutput: CompositeEncoder = output.beginStructure(descriptor)
-            compositeOutput.encodeStringElement(
-                descriptor,
-                0,
-                HexConverter.printHexBinary(obj.typeID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                1,
-                HexConverter.printHexBinary(obj.groupID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                2,
-                HexConverter.printHexBinary(obj.typeName.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                3,
-                HexConverter.printHexBinary(obj.description.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                4,
-                HexConverter.printHexBinary(obj.mass.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                5,
-                HexConverter.printHexBinary(obj.volume.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                6,
-                HexConverter.printHexBinary(obj.capacity.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                7,
-                HexConverter.printHexBinary(obj.portionSize.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                8,
-                HexConverter.printHexBinary(obj.raceID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                9,
-                HexConverter.printHexBinary(obj.basePrice.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                10,
-                HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                11,
-                HexConverter.printHexBinary(obj.marketGroupID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                12,
-                HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                13,
-                HexConverter.printHexBinary(obj.soundID.toString().toUtf8Bytes())
-            )
-            compositeOutput.encodeStringElement(
-                descriptor,
-                14,
-                HexConverter.printHexBinary(obj.graphicID.toString().toUtf8Bytes())
-            )
+			compositeOutput.encodeStringElement(
+				descriptor,
+				0,
+				HexConverter.printHexBinary(obj.typeID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				1,
+				HexConverter.printHexBinary(obj.groupID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				2,
+				HexConverter.printHexBinary(obj.typeName.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				3,
+				HexConverter.printHexBinary(obj.description.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				4,
+				HexConverter.printHexBinary(obj.mass.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				5,
+				HexConverter.printHexBinary(obj.volume.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				6,
+				HexConverter.printHexBinary(obj.capacity.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				7,
+				HexConverter.printHexBinary(obj.portionSize.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				8,
+				HexConverter.printHexBinary(obj.raceID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				9,
+				HexConverter.printHexBinary(obj.basePrice.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				10,
+				HexConverter.printHexBinary(obj.published.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				11,
+				HexConverter.printHexBinary(obj.marketGroupID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				12,
+				HexConverter.printHexBinary(obj.iconID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				13,
+				HexConverter.printHexBinary(obj.soundID.toString().toUtf8Bytes())
+			)
+			compositeOutput.encodeStringElement(
+				descriptor,
+				14,
+				HexConverter.printHexBinary(obj.graphicID.toString().toUtf8Bytes())
+			)
 			compositeOutput.endStructure(descriptor)
 		}
 
@@ -179,85 +179,85 @@ actual data class invtype(
 			loop@ while (true) {
 				when (val i = inp.decodeElementIndex(descriptor)) {
 					CompositeDecoder.READ_DONE -> break@loop
-                    0 -> temp_typeID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    1 -> temp_groupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    2 -> temp_typeName = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toString()
-                    3 -> temp_description = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toString()
-                    4 -> temp_mass = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toDouble()
-                    5 -> temp_volume = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toDouble()
-                    6 -> temp_capacity = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toDouble()
-                    7 -> temp_portionSize =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    8 -> temp_raceID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    9 -> temp_basePrice = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toDouble()
-                    10 -> temp_published = stringFromUtf8Bytes(
-                        HexConverter.parseHexBinary(
-                            inp.decodeStringElement(
-                                descriptor,
-                                i
-                            )
-                        )
-                    ).toBoolean()
-                    11 -> temp_marketGroupID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    12 -> temp_iconID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    13 -> temp_soundID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
-                    14 -> temp_graphicID =
-                        stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					0 -> temp_typeID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					1 -> temp_groupID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					2 -> temp_typeName = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toString()
+					3 -> temp_description = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toString()
+					4 -> temp_mass = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toDouble()
+					5 -> temp_volume = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toDouble()
+					6 -> temp_capacity = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toDouble()
+					7 -> temp_portionSize =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					8 -> temp_raceID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					9 -> temp_basePrice = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toDouble()
+					10 -> temp_published = stringFromUtf8Bytes(
+						HexConverter.parseHexBinary(
+							inp.decodeStringElement(
+								descriptor,
+								i
+							)
+						)
+					).toBoolean()
+					11 -> temp_marketGroupID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					12 -> temp_iconID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					13 -> temp_soundID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
+					14 -> temp_graphicID =
+						stringFromUtf8Bytes(HexConverter.parseHexBinary(inp.decodeStringElement(descriptor, i))).toInt()
 					else -> if (i < descriptor.elementsCount) continue@loop else throw SerializationException("Unknown index $i")
 				}
 			}
 
 			inp.endStructure(descriptor)
 
-            return invtype(
+			return invtype(
 				temp_typeID ?: throw SerializationException("Missing value for typeID"),
 				temp_groupID ?: throw SerializationException("Missing value for groupID"),
 				temp_typeName ?: throw SerializationException("Missing value for typeName"),

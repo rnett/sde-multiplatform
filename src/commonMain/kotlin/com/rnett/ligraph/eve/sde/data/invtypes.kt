@@ -14,31 +14,31 @@ expect class invtype {
 	val volume: Double
 	val capacity: Double
 	val portionSize: Int
-	val raceID: Int
-	val basePrice: Double
+	val raceID: Int?
+	val basePrice: Double?
 	val published: Boolean
-	val marketGroupID: Int
-	val iconID: Int
-	val soundID: Int
+	val marketGroupID: Int?
+	val iconID: Int?
+	val soundID: Int?
 	val graphicID: Int
 
-    val group: invgroup
-	val marketGroup: invmarketgroup
+	val group: invgroup
+	val marketGroup: invmarketgroup?
 	val dgmexpressia: List<dgmexpression>
 	val invtraits_rk: List<invtrait>
 	override fun equals(other: Any?): Boolean
 	override fun hashCode(): Int
 	override fun toString(): String
 
-    @Serializer(invtype::class)
-    companion object : KSerializer<invtype> {
+	@Serializer(invtype::class)
+	companion object : KSerializer<invtype> {
 		fun getItem(id: Int): invtype
 		fun allItems(): List<invtype>
 
-        fun getGroup(item: invtype): invgroup
-		fun getMarketGroup(item: invtype): invmarketgroup
+		fun getGroup(item: invtype): invgroup
+		fun getMarketGroup(item: invtype): invmarketgroup?
 
-        fun getDgmexpressia(item: invtype): List<dgmexpression>
+		fun getDgmexpressia(item: invtype): List<dgmexpression>
 		fun getInvtraits_rk(item: invtype): List<invtrait>
 		
 		override val descriptor: SerialDescriptor
